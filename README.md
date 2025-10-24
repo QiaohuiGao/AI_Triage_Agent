@@ -7,16 +7,22 @@ This project implements a modular **AI triage system** that helps patients descr
 
 ## 🧩 Architecture
 Patient Input
+
 ↓
 Symptom Parser (Ontology mapping: SNOMED/ICD)
+
 ↓
 Multi-level Retrieval (Symptom / Condition / Care-path)
+
 ↓
 ReAct Reasoning (Reason → Act → Reflect)
+
 ↓
 Confidence Voting + Fallback Ensemble
+
 ↓
 Routing & Department Recommendation
+
 ---
 
 ## 🚀 Quick Start
