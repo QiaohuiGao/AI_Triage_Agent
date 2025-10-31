@@ -1,8 +1,3 @@
-完美 👍 我帮你把 README.md 优化成一个漂亮、专业的 GitHub 项目文档模板，适合你这个 AI Triage Agent 项目。
-下面是改进后的版本（Markdown 可直接复制到你的 README.md）👇
-
-⸻
-
 🏥 AI Triage Agent
 
 An intelligent clinical triage system built with FastAPI, LangGraph, and PostgreSQL.
@@ -99,9 +94,3 @@ curl -X POST http://127.0.0.1:8080/triage \
 Research Engineer @ HMS & MGH | MS in CS @ Northeastern
 🔗 LinkedIn￼ | GitHub￼
 
-⸻
-
-是否希望我帮你在最后加一个：
-	•	“🌍 Deployment with Docker” section（介绍如何用 Docker 启动）
-或
-	•	“🧪 Testing & Logs” section（介绍如何运行 curl 测试和 PostgreSQL 日志查询）？
