@@ -1,1 +1,7 @@
 ai-triage-agent-pro/
+# Ignore virtual environments
+.venv/
+venv/
+source/
+__pycache__/
+*.pyc
