@@ -40,7 +40,7 @@ ai-triage-agent-pro/
 .venv/bin/uvicorn app.main:app --reload --port 8080
 
 Then test with:
-curl -s -X POST http://127.0.0.1:8080/triage \
+curl -s -X POST http://127.0.0.1:8081/triage \
   -H "Content-Type: application/json" \
   -d '{ "text": "I feel chest tightness and shortness of breath", "lang": "en" }' | jq
 
