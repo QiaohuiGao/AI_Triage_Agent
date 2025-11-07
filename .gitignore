@@ -9,4 +9,4 @@ __pycache__/
 
 # Build / system
 .DS_Store
-source/
+source/.env
