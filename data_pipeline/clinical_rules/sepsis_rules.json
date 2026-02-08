@@ -1,0 +1,298 @@
+{
+  "condition": "Sepsis",
+  "condition_sctid": "91302008",
+  "guideline_source": "Surviving Sepsis Campaign 2021 + qSOFA + SIRS",
+  "guideline_url": "https://www.sccm.org/SurvivingSepsisCampaign/Guidelines",
+  "version": "1.0",
+  "last_updated": "2024-01",
+
+  "description": "Sepsis is life-threatening organ dysfunction caused by dysregulated host response to infection. Early recognition and treatment (antibiotics within 1 hour, fluid resuscitation) dramatically improves survival.",
+
+  "applicability": {
+    "inclusion": [
+      "Adults with suspected infection",
+      "Signs of systemic inflammatory response",
+      "Altered mental status with infection"
+    ],
+    "exclusion": [
+      "Already receiving sepsis bundle care"
+    ]
+  },
+
+  "decision_rules": [
+    {
+      "rule_id": "SEPSIS_SHOCK",
+      "rule_name": "Septic Shock",
+      "risk_level": "CRITICAL",
+      "description": "Sepsis with hypotension requiring vasopressors and lactate > 2 mmol/L",
+      "criteria": [
+        {
+          "criterion_id": "SEPSIS_SHOCK_C1",
+          "type": "vital_sign",
+          "name": "Hypotension despite fluids",
+          "definition": "MAP < 65 mmHg after fluid challenge, requiring vasopressors",
+          "snomed_code": "45007003"
+        },
+        {
+          "criterion_id": "SEPSIS_SHOCK_C2",
+          "type": "lab_value",
+          "name": "Elevated lactate",
+          "operator": ">",
+          "threshold": 2,
+          "unit": "mmol/L"
+        }
+      ],
+      "action": {
+        "type": "resuscitation",
+        "procedure": "Sepsis bundle: IV access, fluids, vasopressors, antibiotics",
+        "urgency": "IMMEDIATE",
+        "target_time": "Antibiotics within 1 hour",
+        "rationale": "Septic shock mortality 40-60%, each hour delay in antibiotics increases mortality 7.6%"
+      },
+      "evidence_text": "Septic shock is defined by sepsis with persisting hypotension requiring vasopressors to maintain MAP >= 65 and serum lactate > 2 mmol/L despite adequate volume resuscitation. Mortality 40-60%."
+    },
+    {
+      "rule_id": "SEPSIS_QSOFA_HIGH",
+      "rule_name": "qSOFA >= 2 (High Risk)",
+      "risk_level": "HIGH",
+      "description": "Quick SOFA score >= 2 indicates high risk of poor outcome",
+      "criteria": [
+        {
+          "criterion_id": "SEPSIS_QSOFA_C1",
+          "type": "vital_sign",
+          "name": "Altered mental status",
+          "keywords": ["confused", "disoriented", "altered mental status", "GCS < 15"],
+          "snomed_code": "40917007"
+        },
+        {
+          "criterion_id": "SEPSIS_QSOFA_C2",
+          "type": "vital_sign",
+          "name": "Respiratory rate >= 22",
+          "operator": ">=",
+          "threshold": 22,
+          "unit": "breaths/min"
+        },
+        {
+          "criterion_id": "SEPSIS_QSOFA_C3",
+          "type": "vital_sign",
+          "name": "SBP <= 100 mmHg",
+          "operator": "<=",
+          "threshold": 100,
+          "unit": "mmHg"
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["Lactate", "Blood cultures x 2", "CBC", "BMP", "Procalcitonin"],
+        "treatment": "Start empiric antibiotics",
+        "urgency": "IMMEDIATE",
+        "rationale": "qSOFA >= 2 has 3-14x mortality risk"
+      },
+      "evidence_text": "qSOFA (quick SOFA): Altered mental status (1 pt), RR >= 22 (1 pt), SBP <= 100 (1 pt). Score >= 2 indicates high risk of poor outcome and should trigger further evaluation for organ dysfunction."
+    },
+    {
+      "rule_id": "SEPSIS_SIRS",
+      "rule_name": "SIRS Criteria with Infection",
+      "risk_level": "MEDIUM",
+      "description": "Systemic Inflammatory Response Syndrome with suspected infection",
+      "criteria": [
+        {
+          "criterion_id": "SEPSIS_SIRS_C1",
+          "type": "vital_sign",
+          "name": "Temperature abnormal",
+          "definition": "Temp > 38C or < 36C",
+          "keywords": ["fever", "hypothermia", "temperature"],
+          "snomed_code": "386661006"
+        },
+        {
+          "criterion_id": "SEPSIS_SIRS_C2",
+          "type": "vital_sign",
+          "name": "Heart rate > 90",
+          "operator": ">",
+          "threshold": 90,
+          "unit": "bpm",
+          "snomed_code": "3424008"
+        },
+        {
+          "criterion_id": "SEPSIS_SIRS_C3",
+          "type": "vital_sign",
+          "name": "RR > 20 or PaCO2 < 32",
+          "operator": ">",
+          "threshold": 20,
+          "unit": "breaths/min"
+        },
+        {
+          "criterion_id": "SEPSIS_SIRS_C4",
+          "type": "lab_value",
+          "name": "WBC abnormal",
+          "definition": "WBC > 12000 or < 4000 or > 10% bands"
+        }
+      ],
+      "action": {
+        "type": "evaluation",
+        "tests": ["CBC", "BMP", "Lactate", "Urinalysis", "CXR"],
+        "urgency": "URGENT",
+        "rationale": "SIRS with infection source requires evaluation for sepsis"
+      },
+      "evidence_text": "SIRS criteria: Temp > 38C or < 36C, HR > 90, RR > 20 or PaCO2 < 32, WBC > 12K or < 4K or > 10% bands. >= 2 criteria with suspected infection = sepsis."
+    },
+    {
+      "rule_id": "SEPSIS_SOURCE_UTI",
+      "rule_name": "Urosepsis",
+      "risk_level": "HIGH",
+      "description": "Urinary tract infection with systemic signs",
+      "criteria": [
+        {
+          "criterion_id": "SEPSIS_UTI_C1",
+          "type": "symptom",
+          "name": "UTI symptoms",
+          "keywords": ["dysuria", "urinary frequency", "flank pain", "suprapubic pain"],
+          "snomed_code": "68566005"
+        },
+        {
+          "criterion_id": "SEPSIS_UTI_C2",
+          "type": "symptom",
+          "name": "Systemic symptoms",
+          "keywords": ["fever", "chills", "rigors", "altered mental status"]
+        }
+      ],
+      "action": {
+        "type": "treatment",
+        "tests": ["Urinalysis", "Urine culture", "Blood cultures", "BMP"],
+        "treatment": "IV antibiotics (ceftriaxone or fluoroquinolone)",
+        "urgency": "URGENT",
+        "rationale": "Urosepsis common source, requires prompt antibiotics"
+      },
+      "evidence_text": "Urinary tract is most common source of sepsis (25-30%). Elderly and immunocompromised may have atypical presentations. Prompt source control and antibiotics essential."
+    },
+    {
+      "rule_id": "SEPSIS_SOURCE_PNEUMONIA",
+      "rule_name": "Pneumonia with Sepsis",
+      "risk_level": "HIGH",
+      "description": "Pneumonia with systemic inflammatory response",
+      "criteria": [
+        {
+          "criterion_id": "SEPSIS_PNEUMO_C1",
+          "type": "symptom",
+          "name": "Respiratory symptoms",
+          "keywords": ["cough", "dyspnea", "productive cough", "pleuritic pain"],
+          "snomed_code": "233604007"
+        },
+        {
+          "criterion_id": "SEPSIS_PNEUMO_C2",
+          "type": "symptom",
+          "name": "Systemic symptoms",
+          "keywords": ["fever", "chills", "rigors", "confusion"]
+        }
+      ],
+      "action": {
+        "type": "treatment",
+        "tests": ["CXR", "Blood cultures", "Sputum culture", "Procalcitonin"],
+        "treatment": "IV antibiotics per CAP/HAP guidelines",
+        "urgency": "URGENT",
+        "rationale": "Pneumonia is second most common sepsis source"
+      },
+      "evidence_text": "Pneumonia accounts for ~20% of sepsis cases. CURB-65 or PSI can help stratify severity. Severe CAP with sepsis criteria requires ICU admission."
+    },
+    {
+      "rule_id": "SEPSIS_SOURCE_ABDOMINAL",
+      "rule_name": "Abdominal Sepsis",
+      "risk_level": "CRITICAL",
+      "description": "Intra-abdominal infection with systemic signs",
+      "criteria": [
+        {
+          "criterion_id": "SEPSIS_ABD_C1",
+          "type": "symptom",
+          "name": "Abdominal symptoms",
+          "keywords": ["abdominal pain", "peritonitis", "guarding", "rigidity", "rebound"],
+          "snomed_code": "21522001"
+        },
+        {
+          "criterion_id": "SEPSIS_ABD_C2",
+          "type": "symptom",
+          "name": "Systemic symptoms",
+          "keywords": ["fever", "hypotension", "tachycardia"]
+        }
+      ],
+      "action": {
+        "type": "surgery",
+        "procedure": "Source control (surgical drainage/intervention)",
+        "tests": ["CT Abdomen/Pelvis", "Blood cultures", "Lactate"],
+        "treatment": "Broad-spectrum antibiotics",
+        "urgency": "IMMEDIATE",
+        "rationale": "Abdominal sepsis often requires surgical source control"
+      },
+      "evidence_text": "Intra-abdominal sepsis has mortality 20-60% depending on source control. Perforated viscus, abscess, and biliary sepsis require urgent surgical consultation."
+    }
+  ],
+
+  "clarifying_questions": [
+    {
+      "question_id": "SEPSIS_Q1",
+      "question": "Do you have any signs of infection (fever, chills, productive cough, painful urination)?",
+      "question_zh": "您有感染症状吗（发烧、寒战、咳痰、尿痛）？",
+      "target_criterion": "SEPSIS_SIRS_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "SEPSIS_Q2",
+      "question": "Are you feeling confused or is your thinking unclear?",
+      "question_zh": "您是否感到困惑或思维不清晰？",
+      "target_criterion": "SEPSIS_QSOFA_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "SEPSIS_Q3",
+      "question": "Do you have any difficulty breathing or breathing faster than normal?",
+      "question_zh": "您呼吸困难或比平时呼吸快吗？",
+      "target_criterion": "SEPSIS_QSOFA_C2",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "SEPSIS_Q4",
+      "question": "Where do you think the infection might be (lungs, urinary, abdomen, skin)?",
+      "question_zh": "您认为感染可能在哪里（肺、泌尿道、腹部、皮肤）？",
+      "target_criterion": "SEPSIS_SOURCE",
+      "response_type": "choice",
+      "priority": 2
+    }
+  ],
+
+  "text_chunks": [
+    {
+      "chunk_id": "SEPSIS_CHUNK_1",
+      "chunk_type": "decision_rule",
+      "title": "Sepsis Definition and Recognition",
+      "content": "Sepsis is life-threatening organ dysfunction caused by dysregulated host response to infection. Sepsis-3 defines it as suspected infection + SOFA score increase >= 2. qSOFA (quick SOFA) is a bedside screening tool: Altered mental status (GCS < 15), Respiratory rate >= 22, Systolic BP <= 100 mmHg. Score >= 2 indicates high risk. Traditional SIRS criteria (temp, HR, RR, WBC) are sensitive but less specific for sepsis.",
+      "source": "Surviving Sepsis Campaign 2021",
+      "tags": ["sepsis", "qSOFA", "SIRS", "recognition"]
+    },
+    {
+      "chunk_id": "SEPSIS_CHUNK_2",
+      "chunk_type": "management",
+      "title": "Sepsis Bundle - Hour 1",
+      "content": "Hour-1 Bundle for Sepsis: (1) Measure lactate, remeasure if initial lactate > 2 mmol/L. (2) Obtain blood cultures before antibiotics. (3) Administer broad-spectrum antibiotics - target within 1 hour of recognition. (4) Begin rapid IV fluid resuscitation - 30 mL/kg crystalloid for hypotension or lactate >= 4. (5) Apply vasopressors if hypotensive during or after fluid resuscitation to maintain MAP >= 65 mmHg. Early aggressive care reduces mortality significantly.",
+      "source": "Surviving Sepsis Campaign 2021",
+      "tags": ["sepsis", "bundle", "treatment"]
+    },
+    {
+      "chunk_id": "SEPSIS_CHUNK_3",
+      "chunk_type": "red_flag",
+      "title": "Sepsis Red Flags",
+      "content": "Red flags requiring immediate sepsis workup: (1) Fever with confusion/altered mental status, (2) Rigors with hypotension, (3) Fever with tachycardia and tachypnea, (4) Known immunosuppression with any infection signs, (5) Recent instrumentation (catheter, surgery) with fever, (6) Petechiae or purpura with fever (consider meningococcemia), (7) Elderly with vague decline and low-grade fever, (8) Diabetic with infection and hyperglycemia.",
+      "source": "Clinical Practice",
+      "tags": ["sepsis", "red-flag"]
+    },
+    {
+      "chunk_id": "SEPSIS_CHUNK_4",
+      "chunk_type": "clinical_background",
+      "title": "Sepsis Epidemiology",
+      "content": "Sepsis affects >1.7 million adults in US annually with >270,000 deaths. Hospital mortality 15-30%, higher in septic shock (40-60%). Most common sources: respiratory (35-50%), genitourinary (20-30%), abdominal (15-20%), skin/soft tissue (5-10%). Risk factors: age > 65, immunosuppression, diabetes, chronic kidney disease, cancer, recent hospitalization. Every hour delay in antibiotics increases mortality by 7.6%.",
+      "source": "CDC Sepsis Statistics",
+      "tags": ["sepsis", "epidemiology"]
+    }
+  ]
+}

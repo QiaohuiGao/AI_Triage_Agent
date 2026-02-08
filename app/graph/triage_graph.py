@@ -38,6 +38,9 @@ from .nodes.clarifier import clarify_node, should_clarify
 from app.logic.esi_engine import ESIEngine, calculate_esi
 from app.logic.graph_service import get_graph_service, enrich_with_graph
 
+# v2.1 Clinical Rules Reasoning
+from app.logic.clinical_rules_reasoner import reason_with_rules, ReasoningResult
+
 
 # ========== v2.0 新增节点函数 ==========
 
@@ -176,6 +179,112 @@ def esi_assess_node(state: GraphState) -> GraphState:
     return state
 
 
+def clinical_rules_reason_node(state: GraphState) -> GraphState:
+    """
+    临床规则推理节点 - 基于Neo4j临床决策规则进行确定性推理
+
+    使用 ClinicalRulesReasoner 查询匹配的临床规则:
+    - Canadian CT Head Rule (TBI)
+    - HEART Score (ACS)
+    - Wells Criteria / PERC Rule (PE)
+    - FAST / NIH Stroke Scale (Stroke)
+    - Stanford Classification (Aortic Dissection)
+
+    输出:
+    - matched_rules: 匹配的规则列表
+    - rule_based_questions: 基于规则的追问问题
+    - recommended_actions: 推荐的临床动作
+    """
+    entities = state.entities or []
+
+    if not entities:
+        return state
+
+    try:
+        # 收集所有症状的 SNOMED codes 和关键词
+        symptom_sctids = []
+        symptom_keywords = []
+        max_severity = "mild"
+        severity_order = {"mild": 0, "moderate": 1, "severe": 2}
+
+        for entity in entities:
+            sctid = entity.get("sctid")
+            if sctid:
+                symptom_sctids.append(sctid)
+
+            symptom = entity.get("symptom", "")
+            if symptom:
+                symptom_keywords.append(symptom.lower())
+
+            # 取最高严重程度
+            sev = entity.get("severity", "moderate")
+            if severity_order.get(sev, 1) > severity_order.get(max_severity, 1):
+                max_severity = sev
+
+        # 执行规则推理
+        result: ReasoningResult = reason_with_rules(
+            symptom_sctids=symptom_sctids,
+            symptom_keywords=symptom_keywords,
+            severity=max_severity
+        )
+
+        # 更新状态
+        state.clinical_rules_result = {
+            "matched_rules": [
+                {
+                    "rule_id": r.rule_id,
+                    "rule_name": r.rule_name,
+                    "risk_level": r.risk_level,
+                    "guideline_source": r.guideline_source,
+                    "coverage": r.coverage,
+                    "matched_criteria": r.matched_criteria,
+                    "missing_criteria": r.missing_criteria,
+                    "action": r.action,
+                    "evidence_text": r.evidence_text
+                }
+                for r in result.matched_rules
+            ],
+            "highest_risk": result.highest_risk,
+            "recommended_actions": result.recommended_actions,
+            "reasoning_trace": result.reasoning_trace,
+            "confidence": result.confidence
+        }
+
+        # 合并规则追问问题到状态
+        if result.clarifying_questions:
+            existing_questions = state.clarification_questions or []
+            # 避免重复
+            existing_ids = {q.get("question_id") for q in existing_questions}
+            for q in result.clarifying_questions:
+                if q.get("question_id") not in existing_ids:
+                    existing_questions.append(q)
+            state.clarification_questions = existing_questions
+
+            # 如果有高优先级问题且未超过追问轮数，标记需要追问
+            high_priority_qs = [q for q in result.clarifying_questions if q.get("priority", 99) <= 2]
+            if high_priority_qs and not state.needs_clarification:
+                state.needs_clarification = True
+
+        # 如果规则推理发现更高风险，可能需要升级 ESI
+        if result.highest_risk == "CRITICAL" and state.esi_level and state.esi_level > 1:
+            state.esi_level = 1
+            if state.esi_assessment:
+                state.esi_assessment["level"] = 1
+                state.esi_assessment["rationale"] += f" [Upgraded by clinical rule: {result.matched_rules[0].rule_name if result.matched_rules else 'CRITICAL risk'}]"
+
+        elif result.highest_risk == "HIGH" and state.esi_level and state.esi_level > 2:
+            state.esi_level = 2
+            if state.esi_assessment:
+                state.esi_assessment["level"] = 2
+                state.esi_assessment["rationale"] += " [Upgraded by clinical rule: HIGH risk]"
+
+    except Exception as e:
+        print(f"[ClinicalRulesReason] Warning: Rule reasoning failed: {e}")
+        state.clinical_rules_result = None
+
+    return state
+
+
 def clarify_route(state: GraphState) -> Literal["Clarify", "RetrieveDocs"]:
     """
     条件路由函数 - 决定是否需要追问
@@ -226,15 +335,19 @@ def build_triage_graph():
     graph.add_node("ESIAssess", esi_assess_node)       # ESI 评估
     graph.add_node("Clarify", clarify_node)            # 动态追问
 
+    # v2.1 临床规则推理节点
+    graph.add_node("ClinicalRulesReason", clinical_rules_reason_node)  # 规则推理
+
     # ========== 定义有向边 ==========
     # 主流程
     graph.add_edge(START, "ParseSymptom")              # 开始 -> 解析症状
     graph.add_edge("ParseSymptom", "GraphEnrich")      # 解析症状 -> 图丰富
     graph.add_edge("GraphEnrich", "ESIAssess")         # 图丰富 -> ESI 评估
+    graph.add_edge("ESIAssess", "ClinicalRulesReason") # ESI 评估 -> 规则推理
 
-    # 条件边：ESI 评估后决定是否追问
+    # 条件边：规则推理后决定是否追问
     graph.add_conditional_edges(
-        "ESIAssess",
+        "ClinicalRulesReason",
         clarify_route,
         {
             "Clarify": "Clarify",

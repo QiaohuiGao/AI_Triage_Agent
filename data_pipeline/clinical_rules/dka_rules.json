@@ -1,0 +1,310 @@
+{
+  "condition": "Diabetic Ketoacidosis (DKA)",
+  "condition_sctid": "420422005",
+  "guideline_source": "ADA Standards of Care 2024 + Joint British Diabetes Societies",
+  "guideline_url": "https://diabetesjournals.org/care/issue/47/Supplement_1",
+  "version": "1.0",
+  "last_updated": "2024-01",
+
+  "description": "Diabetic ketoacidosis is a life-threatening complication of diabetes characterized by hyperglycemia, ketosis, and acidosis. Requires aggressive IV fluids, insulin, and electrolyte management.",
+
+  "applicability": {
+    "inclusion": [
+      "Known diabetics with acute illness",
+      "New-onset diabetes with metabolic decompensation",
+      "Hyperglycemia with altered mental status"
+    ],
+    "exclusion": [
+      "Hyperosmolar hyperglycemic state (HHS) without ketosis"
+    ]
+  },
+
+  "decision_rules": [
+    {
+      "rule_id": "DKA_SEVERE",
+      "rule_name": "Severe DKA",
+      "risk_level": "CRITICAL",
+      "description": "DKA with severe acidosis, altered mental status, or hemodynamic instability",
+      "criteria": [
+        {
+          "criterion_id": "DKA_SEVERE_C1",
+          "type": "lab_value",
+          "name": "Severe acidosis",
+          "definition": "pH < 7.0 or HCO3 < 10 mEq/L",
+          "operator": "<",
+          "threshold": 7.0,
+          "unit": "pH"
+        },
+        {
+          "criterion_id": "DKA_SEVERE_C2",
+          "type": "symptom",
+          "name": "Altered mental status",
+          "keywords": ["stupor", "coma", "obtunded", "unresponsive"],
+          "snomed_code": "40917007"
+        },
+        {
+          "criterion_id": "DKA_SEVERE_C3",
+          "type": "vital_sign",
+          "name": "Hemodynamic instability",
+          "keywords": ["hypotension", "shock", "tachycardia"]
+        }
+      ],
+      "action": {
+        "type": "resuscitation",
+        "procedure": "ICU admission, aggressive fluid resuscitation, IV insulin",
+        "urgency": "IMMEDIATE",
+        "target_time": "IV insulin within 1 hour",
+        "rationale": "Severe DKA mortality 5-10%, requires ICU-level care"
+      },
+      "evidence_text": "Severe DKA (pH < 7.0, HCO3 < 10, altered mental status) requires ICU admission. Mortality increases with severity of acidosis and presence of precipitating illness."
+    },
+    {
+      "rule_id": "DKA_MODERATE",
+      "rule_name": "Moderate DKA",
+      "risk_level": "HIGH",
+      "description": "DKA with moderate acidosis",
+      "criteria": [
+        {
+          "criterion_id": "DKA_MOD_C1",
+          "type": "lab_value",
+          "name": "Moderate acidosis",
+          "definition": "pH 7.0-7.24 or HCO3 10-14 mEq/L"
+        },
+        {
+          "criterion_id": "DKA_MOD_C2",
+          "type": "symptom",
+          "name": "Alert or drowsy",
+          "keywords": ["alert", "drowsy", "responsive"]
+        }
+      ],
+      "action": {
+        "type": "treatment",
+        "procedure": "Hospital admission, IV fluids, insulin drip",
+        "tests": ["ABG", "BMP q2h", "Serum ketones", "EKG"],
+        "urgency": "URGENT",
+        "rationale": "Moderate DKA can progress to severe if not treated promptly"
+      },
+      "evidence_text": "Moderate DKA (pH 7.0-7.24, HCO3 10-14) typically managed in step-down or floor with close monitoring. Requires IV insulin and aggressive hydration."
+    },
+    {
+      "rule_id": "DKA_MILD",
+      "rule_name": "Mild DKA",
+      "risk_level": "MEDIUM",
+      "description": "DKA with mild acidosis",
+      "criteria": [
+        {
+          "criterion_id": "DKA_MILD_C1",
+          "type": "lab_value",
+          "name": "Mild acidosis",
+          "definition": "pH 7.25-7.30 or HCO3 15-18 mEq/L"
+        },
+        {
+          "criterion_id": "DKA_MILD_C2",
+          "type": "symptom",
+          "name": "Alert",
+          "keywords": ["alert", "oriented"]
+        }
+      ],
+      "action": {
+        "type": "treatment",
+        "procedure": "Hospital admission, IV fluids, subcutaneous insulin possible",
+        "tests": ["BMP q4h", "Serum ketones", "Urine ketones"],
+        "urgency": "URGENT",
+        "rationale": "Even mild DKA requires hospital management"
+      },
+      "evidence_text": "Mild DKA (pH 7.25-7.30, HCO3 15-18) may be treated with subcutaneous insulin analogs in select patients, but most require IV insulin."
+    },
+    {
+      "rule_id": "DKA_CLASSIC_TRIAD",
+      "rule_name": "Classic DKA Presentation",
+      "risk_level": "HIGH",
+      "description": "Classic triad of hyperglycemia, ketosis, and acidosis",
+      "criteria": [
+        {
+          "criterion_id": "DKA_TRIAD_C1",
+          "type": "lab_value",
+          "name": "Hyperglycemia",
+          "definition": "Blood glucose > 250 mg/dL",
+          "operator": ">",
+          "threshold": 250,
+          "unit": "mg/dL"
+        },
+        {
+          "criterion_id": "DKA_TRIAD_C2",
+          "type": "lab_value",
+          "name": "Ketosis",
+          "definition": "Positive serum or urine ketones, beta-hydroxybutyrate > 3 mmol/L"
+        },
+        {
+          "criterion_id": "DKA_TRIAD_C3",
+          "type": "lab_value",
+          "name": "Metabolic acidosis",
+          "definition": "pH < 7.3 and/or HCO3 < 18 mEq/L"
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["ABG/VBG", "BMP", "Serum ketones", "Urine ketones", "CBC", "EKG", "CXR"],
+        "treatment": "IV NS 1-2L bolus, then reassess",
+        "urgency": "IMMEDIATE",
+        "rationale": "DKA confirmed - initiate treatment protocol"
+      },
+      "evidence_text": "DKA diagnostic criteria: Blood glucose > 250 mg/dL (though euglycemic DKA can occur), serum ketones positive, arterial pH < 7.3 or serum bicarbonate < 18 mEq/L, anion gap > 12."
+    },
+    {
+      "rule_id": "DKA_SYMPTOMS",
+      "rule_name": "DKA Symptom Complex",
+      "risk_level": "HIGH",
+      "description": "Clinical symptoms suggestive of DKA",
+      "criteria": [
+        {
+          "criterion_id": "DKA_SX_C1",
+          "type": "symptom",
+          "name": "Polyuria/Polydipsia",
+          "keywords": ["frequent urination", "excessive thirst", "polyuria", "polydipsia"],
+          "snomed_code": "28442001"
+        },
+        {
+          "criterion_id": "DKA_SX_C2",
+          "type": "symptom",
+          "name": "Nausea/Vomiting",
+          "keywords": ["nausea", "vomiting", "abdominal pain"],
+          "snomed_code": "422587007"
+        },
+        {
+          "criterion_id": "DKA_SX_C3",
+          "type": "symptom",
+          "name": "Kussmaul breathing",
+          "keywords": ["deep breathing", "rapid breathing", "labored breathing", "fruity breath"],
+          "snomed_code": "249585000"
+        },
+        {
+          "criterion_id": "DKA_SX_C4",
+          "type": "symptom",
+          "name": "Dehydration signs",
+          "keywords": ["dry mouth", "decreased skin turgor", "tachycardia", "weakness"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["Point-of-care glucose", "Urine ketones", "BMP"],
+        "urgency": "URGENT",
+        "rationale": "Clinical picture consistent with DKA - confirm with labs"
+      },
+      "evidence_text": "Classic DKA symptoms: polyuria, polydipsia, weight loss, weakness, nausea/vomiting, abdominal pain, Kussmaul respirations (deep, rapid), fruity breath odor (acetone)."
+    },
+    {
+      "rule_id": "DKA_CEREBRAL_EDEMA",
+      "rule_name": "Cerebral Edema Risk",
+      "risk_level": "CRITICAL",
+      "description": "Risk of cerebral edema during DKA treatment",
+      "criteria": [
+        {
+          "criterion_id": "DKA_CE_C1",
+          "type": "symptom",
+          "name": "Neurological decline during treatment",
+          "keywords": ["headache", "confusion", "bradycardia", "hypertension", "pupil changes", "posturing"]
+        },
+        {
+          "criterion_id": "DKA_CE_C2",
+          "type": "demographic",
+          "name": "Pediatric patient",
+          "definition": "Age < 20 years with DKA"
+        }
+      ],
+      "action": {
+        "type": "intervention",
+        "procedure": "Mannitol 0.5-1 g/kg IV, reduce fluids, elevate head, neurosurgery consult",
+        "urgency": "IMMEDIATE",
+        "rationale": "Cerebral edema has 21-24% mortality"
+      },
+      "evidence_text": "Cerebral edema occurs in 0.5-1% of pediatric DKA, mortality 21-24%. Risk factors: young age, new-onset diabetes, severe acidosis, high BUN, rapid fluid administration. Signs: headache, altered mental status, bradycardia, hypertension, pupil changes."
+    }
+  ],
+
+  "clarifying_questions": [
+    {
+      "question_id": "DKA_Q1",
+      "question": "Do you have diabetes? If so, what type and are you on insulin?",
+      "question_zh": "您有糖尿病吗？如果有，是什么类型，是否使用胰岛素？",
+      "target_criterion": "DKA_HISTORY",
+      "response_type": "choice",
+      "priority": 1
+    },
+    {
+      "question_id": "DKA_Q2",
+      "question": "Have you missed any insulin doses recently?",
+      "question_zh": "您最近是否漏服过胰岛素？",
+      "target_criterion": "DKA_PRECIPITANT",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "DKA_Q3",
+      "question": "Are you urinating more frequently and feeling very thirsty?",
+      "question_zh": "您是否尿频并且非常口渴？",
+      "target_criterion": "DKA_SX_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "DKA_Q4",
+      "question": "Do you have nausea, vomiting, or abdominal pain?",
+      "question_zh": "您有恶心、呕吐或腹痛吗？",
+      "target_criterion": "DKA_SX_C2",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "DKA_Q5",
+      "question": "Have you had any recent illness, infection, or stress?",
+      "question_zh": "您最近有生病、感染或压力吗？",
+      "target_criterion": "DKA_PRECIPITANT",
+      "response_type": "boolean",
+      "priority": 2
+    }
+  ],
+
+  "text_chunks": [
+    {
+      "chunk_id": "DKA_CHUNK_1",
+      "chunk_type": "decision_rule",
+      "title": "DKA Diagnosis Criteria",
+      "content": "Diabetic Ketoacidosis (DKA) Diagnostic Criteria: (1) Blood glucose > 250 mg/dL (though euglycemic DKA can occur with SGLT2 inhibitors or pregnancy), (2) Arterial pH < 7.3 or serum bicarbonate < 18 mEq/L, (3) Positive serum ketones (beta-hydroxybutyrate > 3 mmol/L preferred) or positive urine ketones, (4) Anion gap > 12. Severity classification: Mild (pH 7.25-7.30, HCO3 15-18), Moderate (pH 7.0-7.24, HCO3 10-14), Severe (pH < 7.0, HCO3 < 10).",
+      "source": "ADA Standards of Care 2024",
+      "tags": ["DKA", "diagnosis", "criteria"]
+    },
+    {
+      "chunk_id": "DKA_CHUNK_2",
+      "chunk_type": "management",
+      "title": "DKA Treatment Protocol",
+      "content": "DKA Treatment Protocol: (1) IV Fluids: NS 1-1.5L in first hour, then 250-500 mL/hr based on hydration status. Switch to D5 1/2NS when glucose < 200. (2) Insulin: Regular insulin 0.1 U/kg bolus, then 0.1 U/kg/hr infusion. Goal glucose drop 50-70 mg/dL/hr. (3) Potassium: If K < 3.3, hold insulin, replace K first. If K 3.3-5.3, add 20-30 mEq K to each liter. If K > 5.3, check q2h. (4) Bicarbonate: Only if pH < 6.9. (5) Monitor BMP, glucose q1-2h until stable.",
+      "source": "ADA Standards of Care 2024",
+      "tags": ["DKA", "treatment", "protocol"]
+    },
+    {
+      "chunk_id": "DKA_CHUNK_3",
+      "chunk_type": "red_flag",
+      "title": "DKA Red Flags",
+      "content": "Red flags in DKA requiring ICU admission: (1) pH < 7.0, (2) HCO3 < 10, (3) Altered mental status (stupor, coma), (4) Hemodynamic instability requiring vasopressors, (5) Anion gap > 25, (6) Serum osmolality > 320, (7) Precipitating illness requiring ICU (MI, sepsis, stroke), (8) Failure to improve after 4-6 hours of standard treatment. Cerebral edema signs: headache, altered mental status, bradycardia, hypertension, pupil changes.",
+      "source": "Joint British Diabetes Societies",
+      "tags": ["DKA", "red-flag", "ICU"]
+    },
+    {
+      "chunk_id": "DKA_CHUNK_4",
+      "chunk_type": "clinical_background",
+      "title": "DKA Precipitants and Prevention",
+      "content": "Common DKA precipitants: (1) Infection (30-50%) - UTI, pneumonia, skin infections, (2) Non-compliance with insulin (20-40%), (3) New-onset Type 1 diabetes (20-25%), (4) Medications - steroids, SGLT2 inhibitors, antipsychotics, (5) Acute illness - MI, stroke, pancreatitis, (6) Substance abuse - alcohol, cocaine. Prevention: Sick day rules education, ketone monitoring, never stop long-acting insulin completely, seek care early.",
+      "source": "ADA Standards of Care 2024",
+      "tags": ["DKA", "precipitants", "prevention"]
+    },
+    {
+      "chunk_id": "DKA_CHUNK_5",
+      "chunk_type": "differential",
+      "title": "DKA vs HHS vs Other",
+      "content": "Differentiating DKA from HHS and other conditions: DKA: BG > 250, pH < 7.3, ketones positive, anion gap elevated, younger patients, Type 1 or insulin-deficient Type 2. HHS: BG > 600, pH > 7.3, minimal ketones, osmolality > 320, older patients, Type 2, more profound dehydration, higher mortality. Euglycemic DKA: glucose < 250 but ketoacidosis present, seen with SGLT2 inhibitors, pregnancy, starvation. Alcoholic ketoacidosis: history of alcohol binge, low/normal glucose.",
+      "source": "Clinical Review",
+      "tags": ["DKA", "HHS", "differential"]
+    }
+  ]
+}

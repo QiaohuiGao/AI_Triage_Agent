@@ -233,10 +233,12 @@ def extract_symptom_keywords(text: str) -> List[str]:
     """
     从文本中提取潜在的症状关键词
 
-    使用多种策略：
-    1. 预定义的医学术语正则表达式
-    2. 常见症状词汇表
-    3. 名词短语提取（可扩展为 NER）
+    使用扩展的症状模式库，覆盖:
+    - TBI (Canadian CT Head Rule)
+    - ACS (HEART Score)
+    - PE (Wells Criteria)
+    - Stroke (FAST)
+    - Aortic Dissection (Stanford)
 
     Args:
         text: 患者描述文本
@@ -244,7 +246,14 @@ def extract_symptom_keywords(text: str) -> List[str]:
     Returns:
         提取的关键词列表
     """
-    # 常见症状关键词模式
+    try:
+        # 使用扩展的症状提取器
+        from app.logic.symptom_patterns import extract_symptoms, extract_symptom_keywords as extended_extract
+        return extended_extract(text)
+    except ImportError:
+        pass
+
+    # Fallback: 基础模式匹配
     symptom_patterns = [
         # 疼痛相关
         r"\b(headache|chest\s*pain|back\s*pain|abdominal\s*pain|pain)\b",
@@ -262,6 +271,12 @@ def extract_symptom_keywords(text: str) -> List[str]:
         r"\b(injury|trauma|wound|fracture|bleeding)\b",
         # 其他常见
         r"\b(rash|swelling|numbness|tingling)\b",
+        # TBI相关
+        r"\b(head\s*injury|concussion|knocked\s*out|fell\s*(?:and\s*)?hit\s*head)\b",
+        # 卒中相关
+        r"\b(face\s*droop|arm\s*weakness|slurred\s*speech|one\s*side)\b",
+        # 心脏相关
+        r"\b(crushing|pressure|radiating|left\s*arm\s*pain)\b",
     ]
 
     candidates = []

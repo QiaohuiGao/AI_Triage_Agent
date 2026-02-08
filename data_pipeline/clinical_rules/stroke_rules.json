@@ -1,0 +1,311 @@
+{
+  "condition": "Stroke",
+  "condition_sctid": "230690007",
+  "guideline_source": "FAST Criteria + NIH Stroke Scale + AHA/ASA Guidelines",
+  "guideline_url": "https://www.stroke.org/en/about-stroke/stroke-symptoms",
+  "version": "1.0",
+  "last_updated": "2024-01",
+
+  "description": "Rapid stroke recognition using FAST criteria and NIH Stroke Scale for assessment. Time-critical condition where 'Time is Brain' - every minute counts for treatment eligibility.",
+
+  "applicability": {
+    "inclusion": [
+      "Adults with acute neurological symptoms",
+      "Sudden onset focal deficits",
+      "Symptoms suggestive of stroke"
+    ],
+    "exclusion": [
+      "Trauma as primary cause",
+      "Known brain tumor with progression"
+    ]
+  },
+
+  "decision_rules": [
+    {
+      "rule_id": "STROKE_FAST_F",
+      "rule_name": "FAST - Face drooping",
+      "risk_level": "HIGH",
+      "description": "Unilateral facial weakness or asymmetry",
+      "criteria": [
+        {
+          "criterion_id": "STROKE_FAST_F_C1",
+          "type": "symptom",
+          "name": "Facial droop",
+          "snomed_code": "398979000",
+          "keywords": ["face drooping", "facial weakness", "one side of face", "smile uneven", "facial asymmetry"]
+        }
+      ],
+      "action": {
+        "type": "pathway",
+        "pathway": "Stroke Code",
+        "urgency": "IMMEDIATE",
+        "rationale": "FAST positive - activate stroke team"
+      },
+      "evidence_text": "Unilateral facial weakness has LR+ of 5.7 for stroke. Ask patient to smile - look for asymmetry."
+    },
+    {
+      "rule_id": "STROKE_FAST_A",
+      "rule_name": "FAST - Arm weakness",
+      "risk_level": "HIGH",
+      "description": "Unilateral arm weakness or drift",
+      "criteria": [
+        {
+          "criterion_id": "STROKE_FAST_A_C1",
+          "type": "symptom",
+          "name": "Arm weakness",
+          "snomed_code": "249966004",
+          "keywords": ["arm weakness", "arm drift", "can't lift arm", "one arm weak", "arm numbness"]
+        }
+      ],
+      "action": {
+        "type": "pathway",
+        "pathway": "Stroke Code",
+        "urgency": "IMMEDIATE",
+        "rationale": "FAST positive - activate stroke team"
+      },
+      "evidence_text": "Unilateral arm weakness has LR+ of 3.2 for stroke. Ask patient to hold both arms up for 10 seconds - look for drift."
+    },
+    {
+      "rule_id": "STROKE_FAST_S",
+      "rule_name": "FAST - Speech difficulty",
+      "risk_level": "HIGH",
+      "description": "Slurred speech or inability to speak",
+      "criteria": [
+        {
+          "criterion_id": "STROKE_FAST_S_C1",
+          "type": "symptom",
+          "name": "Speech abnormality",
+          "snomed_code": "29164008",
+          "keywords": ["slurred speech", "can't speak", "speech difficulty", "words jumbled", "dysarthria", "aphasia"]
+        }
+      ],
+      "action": {
+        "type": "pathway",
+        "pathway": "Stroke Code",
+        "urgency": "IMMEDIATE",
+        "rationale": "FAST positive - activate stroke team"
+      },
+      "evidence_text": "Speech abnormality has LR+ of 3.4 for stroke. Ask patient to repeat a simple phrase - listen for slurring or wrong words."
+    },
+    {
+      "rule_id": "STROKE_FAST_T",
+      "rule_name": "FAST - Time to call",
+      "risk_level": "CRITICAL",
+      "description": "Time of symptom onset and urgency of action",
+      "criteria": [
+        {
+          "criterion_id": "STROKE_FAST_T_C1",
+          "type": "time",
+          "name": "Symptom onset time",
+          "importance": "critical",
+          "note": "Determines eligibility for tPA (< 4.5 hours) and thrombectomy (< 24 hours)"
+        }
+      ],
+      "action": {
+        "type": "documentation",
+        "record": "Last known well time",
+        "urgency": "IMMEDIATE",
+        "rationale": "Time window determines treatment options"
+      },
+      "evidence_text": "IV tPA effective within 4.5 hours (NNT=10). Thrombectomy for LVO effective up to 24 hours in selected patients."
+    },
+    {
+      "rule_id": "STROKE_SAH_1",
+      "rule_name": "Thunderclap headache",
+      "risk_level": "CRITICAL",
+      "description": "Sudden severe headache - worst of life",
+      "criteria": [
+        {
+          "criterion_id": "STROKE_SAH_1_C1",
+          "type": "symptom",
+          "name": "Thunderclap headache",
+          "snomed_code": "25064002",
+          "keywords": ["worst headache", "thunderclap", "sudden severe headache", "headache like never before", "10/10 headache"],
+          "onset": "sudden"
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["CT Head non-contrast", "LP if CT negative"],
+        "urgency": "IMMEDIATE",
+        "rationale": "Rule out subarachnoid hemorrhage"
+      },
+      "evidence_text": "Thunderclap headache has 12-25% probability of SAH. Negative CT within 6 hours has >98% sensitivity; if later, LP required to rule out."
+    },
+    {
+      "rule_id": "STROKE_LVO_1",
+      "rule_name": "Large vessel occlusion indicators",
+      "risk_level": "CRITICAL",
+      "description": "Signs suggestive of large vessel occlusion stroke",
+      "criteria": [
+        {
+          "criterion_id": "STROKE_LVO_1_C1",
+          "type": "symptom",
+          "name": "Severe deficit",
+          "keywords": ["complete hemiplegia", "forced eye deviation", "global aphasia", "neglect", "NIHSS >= 6"]
+        }
+      ],
+      "action": {
+        "type": "pathway",
+        "pathway": "LVO Stroke Code",
+        "tests": ["CTA Head and Neck"],
+        "urgency": "IMMEDIATE",
+        "rationale": "May need thrombectomy"
+      },
+      "evidence_text": "LVO strokes account for 24-46% of ischemic strokes but cause most disability. NIHSS >= 6 suggests LVO. Thrombectomy beneficial up to 24 hours."
+    },
+    {
+      "rule_id": "STROKE_HEMORRHAGIC_1",
+      "rule_name": "Signs of hemorrhagic stroke",
+      "risk_level": "CRITICAL",
+      "description": "Features suggesting intracerebral hemorrhage",
+      "criteria": [
+        {
+          "criterion_id": "STROKE_HEMORRHAGIC_1_C1",
+          "type": "symptom",
+          "name": "ICH features",
+          "keywords": ["decreased consciousness", "severe headache with neuro deficit", "vomiting", "seizure at onset", "very high blood pressure"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["CT Head STAT"],
+        "intervention": "BP management, reverse anticoagulation if applicable",
+        "urgency": "IMMEDIATE",
+        "rationale": "Hemorrhage requires different management than ischemic stroke"
+      },
+      "evidence_text": "ICH accounts for 10-15% of strokes but 30-50% of stroke mortality. Cannot distinguish from ischemic clinically - CT required."
+    },
+    {
+      "rule_id": "STROKE_POSTERIOR_1",
+      "rule_name": "Posterior circulation stroke signs",
+      "risk_level": "HIGH",
+      "description": "Symptoms of basilar/posterior stroke",
+      "criteria": [
+        {
+          "criterion_id": "STROKE_POSTERIOR_1_C1",
+          "type": "symptom",
+          "name": "Posterior circulation symptoms",
+          "keywords": ["vertigo", "diplopia", "ataxia", "dysphagia", "bilateral weakness", "crossed findings", "nystagmus"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["MRI preferred over CT for posterior fossa"],
+        "urgency": "URGENT",
+        "rationale": "Posterior strokes often missed, high mortality if basilar occlusion"
+      },
+      "evidence_text": "Posterior circulation strokes are commonly missed. The 5 Ds: Dizziness, Diplopia, Dysarthria, Dysphagia, Dystaxia suggest posterior involvement."
+    }
+  ],
+
+  "nihss_components": [
+    {"item": "1a. Level of consciousness", "score_range": "0-3"},
+    {"item": "1b. LOC questions", "score_range": "0-2"},
+    {"item": "1c. LOC commands", "score_range": "0-2"},
+    {"item": "2. Best gaze", "score_range": "0-2"},
+    {"item": "3. Visual fields", "score_range": "0-3"},
+    {"item": "4. Facial palsy", "score_range": "0-3"},
+    {"item": "5. Motor arm", "score_range": "0-4 each"},
+    {"item": "6. Motor leg", "score_range": "0-4 each"},
+    {"item": "7. Limb ataxia", "score_range": "0-2"},
+    {"item": "8. Sensory", "score_range": "0-2"},
+    {"item": "9. Best language", "score_range": "0-3"},
+    {"item": "10. Dysarthria", "score_range": "0-2"},
+    {"item": "11. Extinction/inattention", "score_range": "0-2"}
+  ],
+
+  "nihss_interpretation": {
+    "0": "No stroke symptoms",
+    "1-4": "Minor stroke",
+    "5-15": "Moderate stroke",
+    "16-20": "Moderate to severe stroke",
+    "21-42": "Severe stroke"
+  },
+
+  "clarifying_questions": [
+    {
+      "question_id": "STROKE_Q1",
+      "question": "When did the symptoms start? What time was the patient last seen normal?",
+      "question_zh": "症状什么时候开始的？患者最后一次正常是什么时候？",
+      "target_criterion": "STROKE_FAST_T_C1",
+      "response_type": "time",
+      "priority": 1
+    },
+    {
+      "question_id": "STROKE_Q2",
+      "question": "Is one side of the face drooping? Can the patient smile evenly?",
+      "question_zh": "脸的一侧是否下垂？患者能否均匀地微笑？",
+      "target_criterion": "STROKE_FAST_F_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "STROKE_Q3",
+      "question": "Is there weakness in one arm or leg? Can the patient raise both arms?",
+      "question_zh": "一侧手臂或腿有无力感吗？患者能否举起双臂？",
+      "target_criterion": "STROKE_FAST_A_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "STROKE_Q4",
+      "question": "Is speech slurred or difficult to understand?",
+      "question_zh": "说话是否含糊或难以理解？",
+      "target_criterion": "STROKE_FAST_S_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "STROKE_Q5",
+      "question": "Is this the worst headache of the patient's life? Did it start suddenly?",
+      "question_zh": "这是患者一生中最严重的头痛吗？是突然开始的吗？",
+      "target_criterion": "STROKE_SAH_1_C1",
+      "response_type": "boolean",
+      "priority": 1
+    }
+  ],
+
+  "text_chunks": [
+    {
+      "chunk_id": "STROKE_CHUNK_1",
+      "chunk_type": "decision_rule",
+      "title": "FAST Stroke Recognition",
+      "content": "FAST is a mnemonic for rapid stroke recognition: F - Face drooping (ask to smile, look for asymmetry), A - Arm weakness (ask to raise both arms, look for drift), S - Speech difficulty (ask to repeat a phrase, listen for slurring), T - Time to call emergency services (note time symptoms started). If ANY of F, A, or S is positive, stroke probability is high and immediate evaluation is needed. Time is Brain - 1.9 million neurons die per minute in untreated stroke.",
+      "source": "American Stroke Association",
+      "tags": ["stroke", "FAST", "recognition"]
+    },
+    {
+      "chunk_id": "STROKE_CHUNK_2",
+      "chunk_type": "decision_rule",
+      "title": "Stroke Treatment Time Windows",
+      "content": "Stroke treatment is time-sensitive: IV alteplase (tPA) can be given up to 4.5 hours from last known well time (reduces disability NNT=10). Mechanical thrombectomy for large vessel occlusion effective up to 24 hours in selected patients based on imaging. Door-to-needle time goal: < 60 minutes. Door-to-groin time goal: < 90 minutes. Earlier treatment = better outcomes. 'Time is Brain' - every 15-minute delay reduces benefit.",
+      "source": "AHA/ASA Stroke Guidelines 2019",
+      "tags": ["stroke", "tPA", "thrombectomy", "time-window"]
+    },
+    {
+      "chunk_id": "STROKE_CHUNK_3",
+      "chunk_type": "red_flag",
+      "title": "Stroke Red Flags",
+      "content": "Stroke red flags requiring immediate action: (1) Any sudden neurological deficit, (2) Sudden severe headache (thunderclap), (3) Sudden vision loss, (4) Sudden confusion or difficulty speaking, (5) Sudden difficulty walking or loss of balance, (6) Sudden numbness, especially on one side. Additional concerning features: decreasing level of consciousness, seizure, high blood pressure (>220/120), symptoms fluctuating or worsening.",
+      "source": "AHA/ASA Guidelines",
+      "tags": ["stroke", "red-flag", "emergency"]
+    },
+    {
+      "chunk_id": "STROKE_CHUNK_4",
+      "chunk_type": "differential",
+      "title": "Stroke Mimics",
+      "content": "Stroke mimics account for 15-30% of suspected strokes: (1) Hypoglycemia - check glucose immediately, (2) Seizure with post-ictal paralysis (Todd's paralysis), (3) Complex migraine with aura, (4) Conversion disorder, (5) Hypertensive encephalopathy, (6) Brain tumor, (7) Encephalitis, (8) Drug toxicity. Key differentiators: gradual onset, history of similar episodes, positive symptoms (tingling vs numbness), full deficit at onset (stroke) vs progressive (mimic).",
+      "source": "Stroke Mimics Review, Lancet Neurology",
+      "tags": ["stroke", "mimics", "differential"]
+    },
+    {
+      "chunk_id": "STROKE_CHUNK_5",
+      "chunk_type": "management",
+      "title": "Acute Stroke Management",
+      "content": "Acute stroke management: (1) ABCs - maintain airway, breathing, circulation, (2) Check glucose - treat if < 60 mg/dL, (3) Obtain non-contrast CT Head STAT, (4) If ischemic and within 4.5 hours: IV alteplase 0.9 mg/kg (max 90mg), 10% bolus then 90% over 60 min, (5) If LVO suspected: CTA for thrombectomy evaluation, (6) For hemorrhage: reverse anticoagulation, BP control (target <140 systolic), consider surgery if cerebellar or large, (7) NPO until swallow evaluation, (8) Admit to stroke unit.",
+      "source": "AHA/ASA Stroke Guidelines 2019",
+      "tags": ["stroke", "management", "tPA", "treatment"]
+    }
+  ]
+}

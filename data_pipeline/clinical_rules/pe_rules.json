@@ -1,0 +1,324 @@
+{
+  "condition": "Pulmonary Embolism",
+  "condition_sctid": "59282003",
+  "guideline_source": "Wells Criteria + PERC Rule + ESC Guidelines",
+  "guideline_url": "https://www.mdcalc.com/calc/115/wells-criteria-pulmonary-embolism",
+  "version": "1.0",
+  "last_updated": "2024-01",
+
+  "description": "Combined use of PERC Rule (to rule out PE in low-risk patients) and Wells Criteria (to stratify PE probability) for evaluating suspected pulmonary embolism.",
+
+  "applicability": {
+    "inclusion": [
+      "Adults with symptoms suggestive of PE",
+      "Dyspnea, chest pain, hemoptysis, syncope"
+    ],
+    "exclusion": [
+      "Already on anticoagulation",
+      "Known PE being treated"
+    ]
+  },
+
+  "decision_rules": [
+    {
+      "rule_id": "PE_MASSIVE_1",
+      "rule_name": "Massive PE with hemodynamic instability",
+      "risk_level": "CRITICAL",
+      "description": "PE with shock or persistent hypotension",
+      "criteria": [
+        {
+          "criterion_id": "PE_MASSIVE_1_C1",
+          "type": "vital_sign",
+          "name": "Hypotension",
+          "snomed_code": "45007003",
+          "definition": "SBP < 90 mmHg or drop >= 40 mmHg for > 15 minutes"
+        },
+        {
+          "criterion_id": "PE_MASSIVE_1_C2",
+          "type": "symptom",
+          "name": "Shock signs",
+          "keywords": ["altered consciousness", "cold extremities", "oliguria"]
+        }
+      ],
+      "action": {
+        "type": "intervention",
+        "procedure": "Thrombolysis or Embolectomy",
+        "urgency": "IMMEDIATE",
+        "rationale": "High mortality without reperfusion"
+      },
+      "evidence_text": "Massive PE with hemodynamic instability has >50% mortality without treatment. Systemic thrombolysis is first-line unless contraindicated."
+    },
+    {
+      "rule_id": "PE_HIGH_1",
+      "rule_name": "Clinical signs of DVT",
+      "risk_level": "HIGH",
+      "description": "Leg swelling and pain along deep veins",
+      "criteria": [
+        {
+          "criterion_id": "PE_HIGH_1_C1",
+          "type": "symptom",
+          "name": "DVT signs",
+          "snomed_code": "128053003",
+          "keywords": ["leg swelling", "calf pain", "unilateral edema", "leg pain", "calf tenderness"],
+          "wells_points": 3.0
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["D-dimer", "CTPA or V/Q scan"],
+        "urgency": "URGENT",
+        "rationale": "DVT strongly associated with PE"
+      },
+      "evidence_text": "Clinical signs of DVT add 3 points to Wells Score. DVT is source of PE in >90% of cases."
+    },
+    {
+      "rule_id": "PE_HIGH_2",
+      "rule_name": "PE most likely diagnosis",
+      "risk_level": "HIGH",
+      "description": "PE more likely than alternative diagnosis",
+      "criteria": [
+        {
+          "criterion_id": "PE_HIGH_2_C1",
+          "type": "clinical_judgment",
+          "name": "PE most likely",
+          "wells_points": 3.0,
+          "keywords": ["no alternative diagnosis", "PE most likely", "high clinical suspicion"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["CTPA"],
+        "urgency": "URGENT",
+        "rationale": "High pretest probability"
+      },
+      "evidence_text": "When PE is judged more likely than alternative diagnoses, this adds 3 points to Wells Score and often mandates imaging regardless of D-dimer."
+    },
+    {
+      "rule_id": "PE_WELLS_1",
+      "rule_name": "Tachycardia",
+      "risk_level": "MEDIUM",
+      "description": "Heart rate > 100 bpm",
+      "criteria": [
+        {
+          "criterion_id": "PE_WELLS_1_C1",
+          "type": "vital_sign",
+          "name": "Heart rate",
+          "operator": ">",
+          "threshold": 100,
+          "unit": "bpm",
+          "snomed_code": "195080001",
+          "wells_points": 1.5
+        }
+      ],
+      "action": {
+        "type": "score_component",
+        "points": 1.5,
+        "rationale": "Tachycardia adds 1.5 points to Wells Score"
+      },
+      "evidence_text": "Tachycardia (HR > 100) is present in 24-70% of PE patients. Adds 1.5 points to Wells Score."
+    },
+    {
+      "rule_id": "PE_WELLS_2",
+      "rule_name": "Recent immobilization or surgery",
+      "risk_level": "MEDIUM",
+      "description": "Immobilization >= 3 days or surgery within 4 weeks",
+      "criteria": [
+        {
+          "criterion_id": "PE_WELLS_2_C1",
+          "type": "history",
+          "name": "Recent immobilization/surgery",
+          "wells_points": 1.5,
+          "keywords": ["bedrest", "surgery", "immobilized", "hospitalized", "long flight", "cast"]
+        }
+      ],
+      "action": {
+        "type": "score_component",
+        "points": 1.5,
+        "rationale": "Immobilization/surgery adds 1.5 points"
+      },
+      "evidence_text": "Surgery or immobilization within past 4 weeks increases VTE risk 5-10 fold. Adds 1.5 points to Wells Score."
+    },
+    {
+      "rule_id": "PE_WELLS_3",
+      "rule_name": "Previous DVT/PE",
+      "risk_level": "MEDIUM",
+      "description": "History of DVT or PE",
+      "criteria": [
+        {
+          "criterion_id": "PE_WELLS_3_C1",
+          "type": "history",
+          "name": "Previous VTE",
+          "wells_points": 1.5,
+          "keywords": ["previous DVT", "previous PE", "blood clot history", "prior pulmonary embolism"]
+        }
+      ],
+      "action": {
+        "type": "score_component",
+        "points": 1.5,
+        "rationale": "History of VTE adds 1.5 points"
+      },
+      "evidence_text": "Previous DVT/PE increases recurrence risk 5-8 fold. Adds 1.5 points to Wells Score."
+    },
+    {
+      "rule_id": "PE_WELLS_4",
+      "rule_name": "Hemoptysis",
+      "risk_level": "MEDIUM",
+      "description": "Coughing up blood",
+      "criteria": [
+        {
+          "criterion_id": "PE_WELLS_4_C1",
+          "type": "symptom",
+          "name": "Hemoptysis",
+          "snomed_code": "66857006",
+          "wells_points": 1.0,
+          "keywords": ["coughing blood", "hemoptysis", "blood in sputum"]
+        }
+      ],
+      "action": {
+        "type": "score_component",
+        "points": 1.0,
+        "rationale": "Hemoptysis adds 1 point"
+      },
+      "evidence_text": "Hemoptysis occurs in 7-30% of PE cases. While nonspecific, it adds 1 point to Wells Score."
+    },
+    {
+      "rule_id": "PE_WELLS_5",
+      "rule_name": "Active malignancy",
+      "risk_level": "MEDIUM",
+      "description": "Cancer treatment within 6 months or palliative",
+      "criteria": [
+        {
+          "criterion_id": "PE_WELLS_5_C1",
+          "type": "history",
+          "name": "Active cancer",
+          "wells_points": 1.0,
+          "keywords": ["cancer", "malignancy", "chemotherapy", "radiation", "metastatic"]
+        }
+      ],
+      "action": {
+        "type": "score_component",
+        "points": 1.0,
+        "rationale": "Active cancer adds 1 point"
+      },
+      "evidence_text": "Cancer increases VTE risk 4-7 fold. Active treatment or palliative status adds 1 point to Wells Score."
+    }
+  ],
+
+  "perc_rule": {
+    "description": "PERC Rule - PE can be ruled out if ALL criteria are NEGATIVE",
+    "criteria": [
+      "Age < 50 years",
+      "Heart rate < 100 bpm",
+      "SpO2 >= 95% on room air",
+      "No hemoptysis",
+      "No estrogen use",
+      "No prior DVT/PE",
+      "No unilateral leg swelling",
+      "No surgery/trauma requiring hospitalization in past 4 weeks"
+    ],
+    "interpretation": "If ALL 8 criteria are met and gestalt probability is LOW, PE is effectively ruled out without further testing (false negative rate <2%)."
+  },
+
+  "wells_score": {
+    "description": "Wells Score for PE Probability",
+    "components": [
+      {"criterion": "Clinical signs of DVT", "points": 3.0},
+      {"criterion": "PE is most likely diagnosis", "points": 3.0},
+      {"criterion": "Heart rate > 100", "points": 1.5},
+      {"criterion": "Immobilization >= 3d or surgery in past 4 weeks", "points": 1.5},
+      {"criterion": "Previous DVT/PE", "points": 1.5},
+      {"criterion": "Hemoptysis", "points": 1.0},
+      {"criterion": "Active malignancy", "points": 1.0}
+    ],
+    "interpretation": {
+      "low": "Score <= 4: PE unlikely (8% probability). Check D-dimer, if negative, PE ruled out.",
+      "high": "Score > 4: PE likely (34% probability). Proceed to CTPA."
+    }
+  },
+
+  "clarifying_questions": [
+    {
+      "question_id": "PE_Q1",
+      "question": "Is there any swelling in one leg, especially the calf? Any leg pain?",
+      "question_zh": "有没有一条腿肿胀，特别是小腿？有没有腿痛？",
+      "target_criterion": "PE_HIGH_1_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "PE_Q2",
+      "question": "Have you had recent surgery, hospitalization, or been bedridden?",
+      "question_zh": "最近有没有手术、住院或卧床？",
+      "target_criterion": "PE_WELLS_2_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "PE_Q3",
+      "question": "Have you ever had a blood clot in your leg or lung before?",
+      "question_zh": "以前有没有得过腿部或肺部血栓？",
+      "target_criterion": "PE_WELLS_3_C1",
+      "response_type": "boolean",
+      "priority": 2
+    },
+    {
+      "question_id": "PE_Q4",
+      "question": "Have you coughed up any blood?",
+      "question_zh": "有没有咳血？",
+      "target_criterion": "PE_WELLS_4_C1",
+      "response_type": "boolean",
+      "priority": 2
+    },
+    {
+      "question_id": "PE_Q5",
+      "question": "Are you currently being treated for cancer?",
+      "question_zh": "您目前在接受癌症治疗吗？",
+      "target_criterion": "PE_WELLS_5_C1",
+      "response_type": "boolean",
+      "priority": 2
+    }
+  ],
+
+  "text_chunks": [
+    {
+      "chunk_id": "PE_CHUNK_1",
+      "chunk_type": "decision_rule",
+      "title": "Wells Criteria for Pulmonary Embolism",
+      "content": "The Wells Score stratifies patients into PE Likely or PE Unlikely categories. Score components: Clinical signs of DVT (3 points), PE most likely diagnosis (3 points), Heart rate > 100 (1.5 points), Immobilization/surgery (1.5 points), Previous DVT/PE (1.5 points), Hemoptysis (1 point), Active malignancy (1 point). Score > 4: PE Likely (34% probability, proceed to CTPA). Score <= 4: PE Unlikely (8% probability, check D-dimer).",
+      "source": "Wells et al, Ann Intern Med 2001",
+      "tags": ["PE", "Wells", "decision-rule"]
+    },
+    {
+      "chunk_id": "PE_CHUNK_2",
+      "chunk_type": "decision_rule",
+      "title": "PERC Rule for PE Exclusion",
+      "content": "The PERC Rule can rule out PE without D-dimer testing when pretest probability is LOW and ALL 8 criteria are met: (1) Age < 50, (2) HR < 100, (3) SpO2 >= 95%, (4) No hemoptysis, (5) No estrogen use, (6) No prior DVT/PE, (7) No unilateral leg swelling, (8) No recent surgery/trauma. False negative rate < 2% when properly applied.",
+      "source": "Kline et al, J Thromb Haemost 2004",
+      "tags": ["PE", "PERC", "rule-out"]
+    },
+    {
+      "chunk_id": "PE_CHUNK_3",
+      "chunk_type": "red_flag",
+      "title": "PE Red Flags - Massive PE Signs",
+      "content": "Red flags indicating massive or high-risk PE: (1) Hypotension (SBP < 90 or drop >= 40 mmHg), (2) Signs of shock (altered mental status, cool extremities, oliguria), (3) Syncope, (4) Severe dyspnea with cyanosis, (5) RV strain on echo or CT, (6) Elevated troponin or BNP. Massive PE requires consideration of thrombolysis or embolectomy.",
+      "source": "ESC Guidelines on PE 2019",
+      "tags": ["PE", "red-flag", "massive"]
+    },
+    {
+      "chunk_id": "PE_CHUNK_4",
+      "chunk_type": "clinical_background",
+      "title": "Pulmonary Embolism Overview",
+      "content": "Pulmonary embolism occurs when a blood clot, usually from deep leg veins, travels to the pulmonary arteries. Symptoms include: dyspnea (73%), pleuritic chest pain (66%), cough (37%), leg swelling (28%), hemoptysis (13%), syncope (5%). PE is often missed because symptoms are nonspecific and overlap with other conditions. High index of suspicion needed, especially with VTE risk factors.",
+      "source": "PIOPED II Study",
+      "tags": ["PE", "overview", "symptoms"]
+    },
+    {
+      "chunk_id": "PE_CHUNK_5",
+      "chunk_type": "management",
+      "title": "PE Initial Management",
+      "content": "Initial PE management: (1) Supplemental oxygen to maintain SpO2 > 90%, (2) IV access, (3) Hemodynamic support with fluids if hypotensive (avoid aggressive fluids - may worsen RV failure), (4) Anticoagulation with LMWH or unfractionated heparin once confirmed/highly suspected, (5) For massive PE: thrombolysis (alteplase 100mg over 2h) or surgical/interventional embolectomy, (6) IVC filter if anticoagulation contraindicated with acute proximal DVT.",
+      "source": "ESC Guidelines on PE 2019",
+      "tags": ["PE", "management", "treatment"]
+    }
+  ]
+}

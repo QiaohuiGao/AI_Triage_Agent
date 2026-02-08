@@ -116,4 +116,7 @@ class GraphState(BaseModel):
 
     # 生命体征 (可选输入)
     vitals: Optional[Dict[str, Any]] = None          # 生命体征数据
+
+    # ========== v2.1 临床规则推理 ==========
+    clinical_rules_result: Optional[Dict[str, Any]] = None  # 临床规则推理结果
     

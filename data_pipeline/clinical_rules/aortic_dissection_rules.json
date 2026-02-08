@@ -1,0 +1,286 @@
+{
+  "condition": "Aortic Dissection",
+  "condition_sctid": "308546005",
+  "guideline_source": "Stanford Classification + ESC Aortic Diseases Guidelines",
+  "guideline_url": "https://www.escardio.org/Guidelines/Clinical-Practice-Guidelines/Aortic-Diseases",
+  "version": "1.0",
+  "last_updated": "2024-01",
+
+  "description": "Aortic dissection is a life-threatening condition where a tear in the aortic intima allows blood to enter the aortic wall. Stanford Type A (involves ascending aorta) requires emergent surgery; Type B (descending only) is typically managed medically.",
+
+  "applicability": {
+    "inclusion": [
+      "Adults with acute chest/back pain",
+      "High-risk features for aortic pathology"
+    ],
+    "exclusion": [
+      "Known aortic dissection under treatment"
+    ]
+  },
+
+  "decision_rules": [
+    {
+      "rule_id": "AORTIC_TYPE_A",
+      "rule_name": "Type A Dissection - Ascending aorta",
+      "risk_level": "CRITICAL",
+      "description": "Dissection involving the ascending aorta",
+      "criteria": [
+        {
+          "criterion_id": "AORTIC_TYPE_A_C1",
+          "type": "imaging",
+          "name": "Ascending aorta involvement",
+          "definition": "Dissection flap in ascending aorta on CTA or TEE"
+        }
+      ],
+      "action": {
+        "type": "surgery",
+        "procedure": "Emergency aortic repair",
+        "urgency": "IMMEDIATE",
+        "target_time": "Operating room within hours",
+        "rationale": "Mortality 1-2% per hour without surgery"
+      },
+      "evidence_text": "Type A dissection has 50% mortality at 48 hours without surgery. Emergency surgical repair is the definitive treatment."
+    },
+    {
+      "rule_id": "AORTIC_TYPE_B",
+      "rule_name": "Type B Dissection - Descending aorta only",
+      "risk_level": "HIGH",
+      "description": "Dissection limited to descending aorta",
+      "criteria": [
+        {
+          "criterion_id": "AORTIC_TYPE_B_C1",
+          "type": "imaging",
+          "name": "Descending aorta only",
+          "definition": "Dissection begins distal to left subclavian, no ascending involvement"
+        }
+      ],
+      "action": {
+        "type": "medical_management",
+        "treatment": "BP and heart rate control",
+        "targets": "SBP 100-120 mmHg, HR < 60 bpm",
+        "urgency": "URGENT",
+        "rationale": "Most Type B managed medically unless complicated"
+      },
+      "evidence_text": "Uncomplicated Type B dissection has 30-day mortality of 10% with medical therapy. Complicated cases (malperfusion, rupture) require intervention."
+    },
+    {
+      "rule_id": "AORTIC_HIGH_1",
+      "rule_name": "Characteristic tearing pain",
+      "risk_level": "HIGH",
+      "description": "Sudden severe tearing or ripping chest/back pain",
+      "criteria": [
+        {
+          "criterion_id": "AORTIC_HIGH_1_C1",
+          "type": "symptom",
+          "name": "Tearing pain",
+          "snomed_code": "426206001",
+          "keywords": ["tearing", "ripping", "severe sudden pain", "worst pain ever", "sharp severe chest pain"],
+          "character": "Abrupt onset, maximal at onset, tearing quality"
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["CTA Chest/Abdomen/Pelvis with runoff", "BP both arms"],
+        "urgency": "IMMEDIATE",
+        "rationale": "Classic dissection presentation"
+      },
+      "evidence_text": "Sudden onset of pain (97%), severe intensity (90%), and tearing/ripping quality (51%) are characteristic. Pain maximal at onset (unlike MI which crescendos)."
+    },
+    {
+      "rule_id": "AORTIC_HIGH_2",
+      "rule_name": "Migratory pain",
+      "risk_level": "HIGH",
+      "description": "Pain that migrates from chest to back or abdomen",
+      "criteria": [
+        {
+          "criterion_id": "AORTIC_HIGH_2_C1",
+          "type": "symptom",
+          "name": "Migratory pain",
+          "keywords": ["pain moved", "started in chest went to back", "traveling pain", "pain spreading"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["CTA Aorta"],
+        "urgency": "URGENT",
+        "rationale": "Suggests dissection propagation"
+      },
+      "evidence_text": "Migratory pain reflects propagation of the dissection flap. Present in ~17% of patients but highly specific when present."
+    },
+    {
+      "rule_id": "AORTIC_HIGH_3",
+      "rule_name": "Blood pressure differential",
+      "risk_level": "HIGH",
+      "description": "SBP difference > 20 mmHg between arms",
+      "criteria": [
+        {
+          "criterion_id": "AORTIC_HIGH_3_C1",
+          "type": "vital_sign",
+          "name": "BP differential",
+          "operator": ">",
+          "threshold": 20,
+          "unit": "mmHg",
+          "snomed_code": "13213009"
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["CTA Aorta"],
+        "urgency": "IMMEDIATE",
+        "rationale": "Indicates branch vessel involvement"
+      },
+      "evidence_text": "BP differential > 20 mmHg suggests branch vessel involvement by dissection flap. Present in 19% of Type A and 9% of Type B dissections."
+    },
+    {
+      "rule_id": "AORTIC_HIGH_4",
+      "rule_name": "Aortic regurgitation murmur",
+      "risk_level": "HIGH",
+      "description": "New diastolic murmur suggesting aortic insufficiency",
+      "criteria": [
+        {
+          "criterion_id": "AORTIC_HIGH_4_C1",
+          "type": "exam_finding",
+          "name": "Aortic regurgitation",
+          "keywords": ["diastolic murmur", "aortic regurgitation", "aortic insufficiency"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["Echo", "CTA"],
+        "urgency": "IMMEDIATE",
+        "rationale": "Indicates aortic root involvement"
+      },
+      "evidence_text": "Aortic regurgitation in Type A dissection (40-75%) results from aortic root dilation or flap prolapse. May cause acute heart failure."
+    },
+    {
+      "rule_id": "AORTIC_HIGH_5",
+      "rule_name": "Malperfusion syndrome",
+      "risk_level": "CRITICAL",
+      "description": "End-organ ischemia from dissection flap obstruction",
+      "criteria": [
+        {
+          "criterion_id": "AORTIC_HIGH_5_C1",
+          "type": "symptom",
+          "name": "Malperfusion signs",
+          "keywords": ["stroke symptoms", "limb ischemia", "abdominal pain", "renal failure", "paraplegia"]
+        }
+      ],
+      "action": {
+        "type": "intervention",
+        "procedure": "Emergent endovascular or surgical intervention",
+        "urgency": "IMMEDIATE",
+        "rationale": "Organ at risk of irreversible damage"
+      },
+      "evidence_text": "Malperfusion occurs when dissection flap compromises branch vessel flow. Mesenteric malperfusion mortality >50%. Requires prompt intervention."
+    }
+  ],
+
+  "aortic_dissection_detection_score": {
+    "description": "ADD-RS helps identify patients at risk for aortic dissection",
+    "components": [
+      {
+        "category": "High-risk conditions (1 point if any)",
+        "items": ["Marfan syndrome", "Connective tissue disease", "Known aortic valve disease", "Known thoracic aortic aneurysm", "Previous aortic manipulation"]
+      },
+      {
+        "category": "High-risk pain features (1 point if any)",
+        "items": ["Chest, back, or abdominal pain that is: abrupt onset, severe intensity, ripping/tearing"]
+      },
+      {
+        "category": "High-risk exam findings (1 point if any)",
+        "items": ["Perfusion deficit (pulse deficit, SBP differential, focal neuro deficit)", "New aortic diastolic murmur", "Hypotension or shock"]
+      }
+    ],
+    "interpretation": {
+      "0": "Low risk - consider alternative diagnoses",
+      "1": "Intermediate risk - D-dimer to screen (if < 500, very low probability)",
+      "2-3": "High risk - proceed directly to imaging (CTA or TEE)"
+    }
+  },
+
+  "clarifying_questions": [
+    {
+      "question_id": "AORTIC_Q1",
+      "question": "Did the pain start suddenly and reach maximum intensity immediately?",
+      "question_zh": "疼痛是突然开始并立即达到最剧烈程度的吗？",
+      "target_criterion": "AORTIC_HIGH_1_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "AORTIC_Q2",
+      "question": "Is the pain tearing, ripping, or knife-like in quality?",
+      "question_zh": "疼痛是撕裂样、刀割样的吗？",
+      "target_criterion": "AORTIC_HIGH_1_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "AORTIC_Q3",
+      "question": "Has the pain moved from the chest to the back or abdomen?",
+      "question_zh": "疼痛是否从胸部转移到了背部或腹部？",
+      "target_criterion": "AORTIC_HIGH_2_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "AORTIC_Q4",
+      "question": "Do you have a history of high blood pressure, connective tissue disease, or known aortic problems?",
+      "question_zh": "您有高血压、结缔组织病或已知的主动脉问题吗？",
+      "target_criterion": "ADD_RS",
+      "response_type": "boolean",
+      "priority": 2
+    },
+    {
+      "question_id": "AORTIC_Q5",
+      "question": "Is there any weakness in arms or legs, or any numbness?",
+      "question_zh": "手臂或腿有无力或麻木吗？",
+      "target_criterion": "AORTIC_HIGH_5_C1",
+      "response_type": "boolean",
+      "priority": 2
+    }
+  ],
+
+  "text_chunks": [
+    {
+      "chunk_id": "AORTIC_CHUNK_1",
+      "chunk_type": "decision_rule",
+      "title": "Stanford Classification of Aortic Dissection",
+      "content": "Stanford classification divides aortic dissection based on involvement of ascending aorta: Type A - Involves ascending aorta (regardless of origin), requires EMERGENT SURGERY. Mortality 1-2% per hour without surgery, 50% at 48 hours. Type B - Limited to descending aorta (distal to left subclavian), usually managed MEDICALLY with BP and heart rate control. Complicated Type B (malperfusion, rupture, rapid expansion) requires intervention.",
+      "source": "ESC Aortic Diseases Guidelines 2014",
+      "tags": ["aortic-dissection", "Stanford", "classification"]
+    },
+    {
+      "chunk_id": "AORTIC_CHUNK_2",
+      "chunk_type": "red_flag",
+      "title": "Aortic Dissection Red Flags",
+      "content": "Red flags for aortic dissection: (1) Sudden severe chest/back pain maximal at onset, (2) Tearing or ripping quality, (3) Migratory pain, (4) Blood pressure differential > 20 mmHg between arms, (5) Pulse deficit, (6) New aortic regurgitation murmur, (7) Neurological symptoms (stroke), (8) Limb ischemia, (9) Marfan habitus or known connective tissue disease, (10) Widened mediastinum on CXR. Any red flag with compatible symptoms warrants urgent CTA.",
+      "source": "IRAD Database, Circulation 2002",
+      "tags": ["aortic-dissection", "red-flag"]
+    },
+    {
+      "chunk_id": "AORTIC_CHUNK_3",
+      "chunk_type": "clinical_background",
+      "title": "Aortic Dissection Overview",
+      "content": "Aortic dissection occurs when an intimal tear allows blood to enter the aortic media, creating a false lumen. Risk factors: hypertension (72%), atherosclerosis, Marfan syndrome, bicuspid aortic valve, prior aortic surgery, trauma, cocaine use. Peak incidence age 50-70. Male predominance 2:1. Presenting symptoms: chest pain (79%), back pain (53%), abdominal pain (30%). Classic triad of tearing pain, pulse deficit, widened mediastinum present in < 50%.",
+      "source": "IRAD Database",
+      "tags": ["aortic-dissection", "overview", "epidemiology"]
+    },
+    {
+      "chunk_id": "AORTIC_CHUNK_4",
+      "chunk_type": "differential",
+      "title": "Dissection vs ACS vs PE",
+      "content": "Differentiating aortic dissection from MI and PE: Dissection: sudden maximal pain at onset, tearing quality, migratory, BP differential, pulse deficit. MI: crescendo pain over minutes, pressure quality, ST changes, troponin elevation, no pulse deficit. PE: dyspnea predominant, pleuritic pain, hypoxia, leg swelling, positive Wells criteria. Key point: dissection pain is maximal AT ONSET, MI pain builds gradually. D-dimer elevated in both dissection and PE. If dissection suspected, get CTA, not just D-dimer.",
+      "source": "Clinical Review, NEJM",
+      "tags": ["aortic-dissection", "differential", "ACS", "PE"]
+    },
+    {
+      "chunk_id": "AORTIC_CHUNK_5",
+      "chunk_type": "management",
+      "title": "Aortic Dissection Management",
+      "content": "Initial management of suspected dissection: (1) Large-bore IV access x 2, (2) Continuous BP and cardiac monitoring, (3) Pain control - morphine to reduce sympathetic drive, (4) HR control - IV beta-blocker (esmolol or labetalol) to target HR < 60, (5) BP control after HR controlled - target SBP 100-120, (6) CTA aorta from arch to iliacs (or TEE if unstable), (7) Type O blood available, (8) Surgical consultation for Type A, (9) Avoid anticoagulation until diagnosis clarified. For Type A: emergent surgical repair. For uncomplicated Type B: medical management in ICU.",
+      "source": "ESC Aortic Diseases Guidelines",
+      "tags": ["aortic-dissection", "management", "treatment"]
+    }
+  ]
+}
