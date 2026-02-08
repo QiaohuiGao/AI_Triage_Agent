@@ -1,0 +1,313 @@
+{
+  "condition": "Acute Coronary Syndrome",
+  "condition_sctid": "394659003",
+  "guideline_source": "HEART Score + AHA/ACC Guidelines",
+  "guideline_url": "https://www.mdcalc.com/calc/1752/heart-score-major-cardiac-events",
+  "version": "1.0",
+  "last_updated": "2024-01",
+
+  "description": "The HEART Score stratifies risk of major adverse cardiac events (MACE) in patients with chest pain. Combined with AHA/ACC guidelines for acute coronary syndrome management.",
+
+  "applicability": {
+    "inclusion": [
+      "Adults presenting with chest pain or anginal equivalent",
+      "Symptoms suggestive of cardiac origin"
+    ],
+    "exclusion": [
+      "Clear non-cardiac cause identified",
+      "STEMI on initial ECG (direct to cath lab)"
+    ]
+  },
+
+  "decision_rules": [
+    {
+      "rule_id": "ACS_STEMI_1",
+      "rule_name": "STEMI on ECG",
+      "risk_level": "CRITICAL",
+      "description": "ST-elevation myocardial infarction on ECG",
+      "criteria": [
+        {
+          "criterion_id": "ACS_STEMI_1_C1",
+          "type": "test_result",
+          "name": "ST elevation on ECG",
+          "snomed_code": "401303003",
+          "keywords": ["ST elevation", "STEMI", "ST segment elevation"]
+        }
+      ],
+      "action": {
+        "type": "intervention",
+        "procedure": "Primary PCI",
+        "urgency": "IMMEDIATE",
+        "target_time": "Door-to-balloon < 90 minutes",
+        "rationale": "Time-sensitive reperfusion therapy"
+      },
+      "evidence_text": "STEMI requires immediate reperfusion therapy. Primary PCI is preferred if available within 90 minutes of first medical contact."
+    },
+    {
+      "rule_id": "ACS_HIGH_1",
+      "rule_name": "Typical anginal chest pain",
+      "risk_level": "HIGH",
+      "description": "Chest pain with typical anginal features",
+      "criteria": [
+        {
+          "criterion_id": "ACS_HIGH_1_C1",
+          "type": "symptom",
+          "name": "Typical chest pain",
+          "snomed_code": "426396005",
+          "features": [
+            "Substernal location",
+            "Pressure/squeezing quality",
+            "Radiation to arm/jaw/neck",
+            "Associated with exertion",
+            "Relieved by rest or nitroglycerin"
+          ],
+          "keywords": ["crushing", "squeezing", "pressure", "elephant on chest", "tight band"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["ECG", "Troponin", "Chest X-ray"],
+        "urgency": "IMMEDIATE",
+        "rationale": "High suspicion for ACS"
+      },
+      "evidence_text": "Typical anginal chest pain has 3 characteristics: substernal, provoked by exertion, relieved by rest/nitroglycerin. Presence of all 3 indicates definite angina."
+    },
+    {
+      "rule_id": "ACS_HIGH_2",
+      "rule_name": "Chest pain with radiation",
+      "risk_level": "HIGH",
+      "description": "Chest pain radiating to arm, jaw, or neck",
+      "criteria": [
+        {
+          "criterion_id": "ACS_HIGH_2_C1",
+          "type": "symptom",
+          "name": "Radiating chest pain",
+          "snomed_code": "102588006",
+          "keywords": ["radiates to arm", "radiates to jaw", "radiates to neck", "pain in left arm", "jaw pain with chest pain"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["ECG", "Troponin"],
+        "urgency": "IMMEDIATE",
+        "rationale": "Classic ACS presentation"
+      },
+      "evidence_text": "Radiation of chest pain to the left arm increases likelihood ratio for MI to 2.3. Radiation to right arm or both arms further increases likelihood."
+    },
+    {
+      "rule_id": "ACS_HIGH_3",
+      "rule_name": "Diaphoresis with chest pain",
+      "risk_level": "HIGH",
+      "description": "Sweating associated with chest discomfort",
+      "criteria": [
+        {
+          "criterion_id": "ACS_HIGH_3_C1",
+          "type": "symptom",
+          "name": "Diaphoresis",
+          "snomed_code": "415690000",
+          "keywords": ["sweating", "diaphoresis", "cold sweat", "clammy"]
+        },
+        {
+          "criterion_id": "ACS_HIGH_3_C2",
+          "type": "symptom",
+          "name": "Chest pain",
+          "snomed_code": "29857009"
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["ECG", "Troponin"],
+        "urgency": "IMMEDIATE",
+        "rationale": "Sympathetic activation suggests acute MI"
+      },
+      "evidence_text": "Diaphoresis with chest pain increases likelihood ratio for MI to 2.0. Combination of sweating, nausea, and vomiting highly suggestive of inferior MI."
+    },
+    {
+      "rule_id": "ACS_HIGH_4",
+      "rule_name": "Positive troponin",
+      "risk_level": "HIGH",
+      "description": "Elevated cardiac troponin",
+      "criteria": [
+        {
+          "criterion_id": "ACS_HIGH_4_C1",
+          "type": "test_result",
+          "name": "Troponin elevation",
+          "snomed_code": "105000003",
+          "operator": ">",
+          "threshold": "99th percentile URL"
+        }
+      ],
+      "action": {
+        "type": "admission",
+        "destination": "CCU/Cardiology",
+        "urgency": "IMMEDIATE",
+        "rationale": "Confirmed myocardial injury"
+      },
+      "evidence_text": "Troponin elevation above the 99th percentile with rise/fall pattern confirms acute myocardial injury. Serial testing at 0 and 3 hours recommended."
+    },
+    {
+      "rule_id": "ACS_ATYPICAL_1",
+      "rule_name": "Atypical presentation - elderly/diabetic",
+      "risk_level": "MEDIUM",
+      "description": "Atypical ACS symptoms in high-risk population",
+      "criteria": [
+        {
+          "criterion_id": "ACS_ATYPICAL_1_C1",
+          "type": "symptom",
+          "name": "Atypical symptoms",
+          "keywords": ["dyspnea only", "fatigue", "epigastric pain", "nausea", "weakness"]
+        },
+        {
+          "criterion_id": "ACS_ATYPICAL_1_C2",
+          "type": "risk_factor",
+          "name": "High-risk demographics",
+          "keywords": ["elderly", "diabetic", "female", "age > 65"]
+        }
+      ],
+      "action": {
+        "type": "workup",
+        "tests": ["ECG", "Troponin"],
+        "urgency": "URGENT",
+        "rationale": "Atypical presentation common in elderly, diabetics, women"
+      },
+      "evidence_text": "Up to 1/3 of MI patients present without chest pain, especially elderly, diabetic, and female patients. Dyspnea may be the only symptom (anginal equivalent)."
+    }
+  ],
+
+  "heart_score": {
+    "description": "HEART Score for Major Cardiac Events",
+    "components": [
+      {
+        "component": "History",
+        "points": {
+          "0": "Slightly suspicious",
+          "1": "Moderately suspicious",
+          "2": "Highly suspicious"
+        }
+      },
+      {
+        "component": "ECG",
+        "points": {
+          "0": "Normal",
+          "1": "Non-specific repolarization disturbance",
+          "2": "Significant ST deviation"
+        }
+      },
+      {
+        "component": "Age",
+        "points": {
+          "0": "< 45 years",
+          "1": "45-64 years",
+          "2": ">= 65 years"
+        }
+      },
+      {
+        "component": "Risk Factors",
+        "points": {
+          "0": "No known risk factors",
+          "1": "1-2 risk factors",
+          "2": ">= 3 risk factors or known CAD"
+        }
+      },
+      {
+        "component": "Troponin",
+        "points": {
+          "0": "Normal",
+          "1": "1-2x normal limit",
+          "2": "> 2x normal limit"
+        }
+      }
+    ],
+    "interpretation": {
+      "0-3": "Low risk (0.9-1.7% MACE) - Consider discharge with follow-up",
+      "4-6": "Intermediate risk (12-16.6% MACE) - Admit for observation",
+      "7-10": "High risk (50-65% MACE) - Early invasive management"
+    }
+  },
+
+  "clarifying_questions": [
+    {
+      "question_id": "ACS_Q1",
+      "question": "Can you describe the chest pain? Is it pressure, squeezing, or sharp?",
+      "question_zh": "能描述一下胸痛吗？是压迫感、挤压感还是刺痛？",
+      "target_criterion": "ACS_HIGH_1_C1",
+      "response_type": "text",
+      "priority": 1
+    },
+    {
+      "question_id": "ACS_Q2",
+      "question": "Does the pain radiate to your arm, jaw, neck, or back?",
+      "question_zh": "疼痛有没有放射到手臂、下巴、脖子或背部？",
+      "target_criterion": "ACS_HIGH_2_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "ACS_Q3",
+      "question": "Are you sweating, feeling nauseous, or short of breath?",
+      "question_zh": "有没有出汗、恶心或呼吸困难？",
+      "target_criterion": "ACS_HIGH_3_C1",
+      "response_type": "boolean",
+      "priority": 1
+    },
+    {
+      "question_id": "ACS_Q4",
+      "question": "Do you have diabetes, high blood pressure, or a history of heart disease?",
+      "question_zh": "您有糖尿病、高血压或心脏病史吗？",
+      "target_criterion": "ACS_ATYPICAL_1_C2",
+      "response_type": "boolean",
+      "priority": 2
+    },
+    {
+      "question_id": "ACS_Q5",
+      "question": "When did the pain start? Is it constant or does it come and go?",
+      "question_zh": "疼痛什么时候开始的？是持续的还是间歇性的？",
+      "target_criterion": "ACS_HIGH_1_C1",
+      "response_type": "text",
+      "priority": 2
+    }
+  ],
+
+  "text_chunks": [
+    {
+      "chunk_id": "ACS_CHUNK_1",
+      "chunk_type": "decision_rule",
+      "title": "HEART Score for Chest Pain Evaluation",
+      "content": "The HEART Score stratifies chest pain patients into low, intermediate, and high risk for major adverse cardiac events (MACE). Components: History (0-2 points based on typicality), ECG (0-2 points), Age (0-2 points), Risk factors (0-2 points), Troponin (0-2 points). Score 0-3: Low risk (1.7% MACE), consider discharge. Score 4-6: Intermediate (16.6% MACE), admit for observation. Score 7-10: High risk (65% MACE), early invasive strategy.",
+      "source": "HEART Score, Eur Heart J Acute Cardiovasc Care 2012",
+      "tags": ["ACS", "HEART-score", "risk-stratification"]
+    },
+    {
+      "chunk_id": "ACS_CHUNK_2",
+      "chunk_type": "red_flag",
+      "title": "ACS Red Flags - Immediate Action Required",
+      "content": "Red flags in chest pain requiring immediate cardiology evaluation: (1) ST elevation on ECG - activate cath lab, (2) Hemodynamic instability (hypotension, shock), (3) New heart failure symptoms, (4) Ventricular arrhythmias, (5) Ongoing severe chest pain unrelieved by nitroglycerin, (6) Positive troponin with typical symptoms. These findings indicate high-risk ACS requiring immediate intervention.",
+      "source": "AHA/ACC NSTE-ACS Guidelines 2021",
+      "tags": ["ACS", "red-flag", "emergency"]
+    },
+    {
+      "chunk_id": "ACS_CHUNK_3",
+      "chunk_type": "clinical_background",
+      "title": "Acute Coronary Syndrome Spectrum",
+      "content": "Acute coronary syndrome encompasses: (1) STEMI - complete coronary occlusion with ST elevation, requires emergent reperfusion, (2) NSTEMI - partial occlusion with troponin elevation but no ST elevation, requires urgent risk stratification, (3) Unstable Angina - threatened occlusion without troponin rise, requires observation and risk stratification. All share underlying pathophysiology of atherosclerotic plaque rupture with thrombosis.",
+      "source": "AHA/ACC Guidelines 2021",
+      "tags": ["ACS", "overview", "classification"]
+    },
+    {
+      "chunk_id": "ACS_CHUNK_4",
+      "chunk_type": "atypical_presentation",
+      "title": "Atypical ACS Presentations",
+      "content": "Atypical ACS presentations occur in up to 1/3 of patients, especially: (1) Women - may present with fatigue, dyspnea, nausea without chest pain, (2) Elderly - confusion, weakness, dyspnea may predominate, (3) Diabetics - silent ischemia due to neuropathy, (4) Post-surgical patients - pain attribution error. Anginal equivalents include: dyspnea on exertion, epigastric discomfort, jaw or arm pain without chest pain, unexplained diaphoresis.",
+      "source": "AHA Scientific Statement on Sex Differences in ACS",
+      "tags": ["ACS", "atypical", "women", "elderly"]
+    },
+    {
+      "chunk_id": "ACS_CHUNK_5",
+      "chunk_type": "management",
+      "title": "Initial ACS Management",
+      "content": "Initial ACS management includes: (1) Aspirin 325mg chewed immediately, (2) ECG within 10 minutes of arrival, (3) Continuous monitoring, (4) IV access, (5) Oxygen if SpO2 < 90%, (6) Nitroglycerin for ongoing pain (avoid if hypotensive or RV infarct), (7) Morphine for refractory pain, (8) Serial troponins at 0 and 3 hours, (9) Anticoagulation (heparin) once diagnosis confirmed, (10) Beta-blocker if no contraindications. For STEMI, activate cath lab for primary PCI.",
+      "source": "AHA/ACC STEMI Guidelines 2013",
+      "tags": ["ACS", "management", "initial-treatment"]
+    }
+  ]
+}

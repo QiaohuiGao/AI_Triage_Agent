@@ -1,0 +1,85 @@
+{
+  "protocol_id": "headache_001",
+  "symptom": "Headache",
+  "snomed_codes": ["25064002", "37796009", "4969004"],
+  "description": "Schmitt-Thompson style triage protocol for headache",
+
+  "red_flags": [
+    {
+      "id": "rf_sah",
+      "condition": "Possible subarachnoid hemorrhage",
+      "questions": [
+        "Is this the worst headache of your life?",
+        "Did the headache start suddenly (thunderclap - peak within seconds)?",
+        "Do you have neck stiffness?"
+      ],
+      "positive_action": "ESI_LEVEL_1",
+      "keywords": ["worst", "thunderclap", "sudden", "severe", "stiff neck"]
+    },
+    {
+      "id": "rf_meningitis",
+      "condition": "Possible meningitis",
+      "questions": [
+        "Do you have a fever along with your headache?",
+        "Is your neck stiff or painful to move?",
+        "Are you sensitive to light (photophobia)?"
+      ],
+      "positive_action": "ESI_LEVEL_2",
+      "keywords": ["fever", "stiff", "neck", "light", "photophobia"]
+    },
+    {
+      "id": "rf_stroke",
+      "condition": "Possible stroke",
+      "questions": [
+        "Do you have weakness or numbness on one side of your body?",
+        "Is your speech slurred or confused?",
+        "Do you have vision changes?"
+      ],
+      "positive_action": "ESI_LEVEL_1",
+      "keywords": ["weakness", "numbness", "one side", "slurred", "vision"]
+    },
+    {
+      "id": "rf_raised_icp",
+      "condition": "Possible raised intracranial pressure",
+      "questions": [
+        "Is your headache worse in the morning or when lying down?",
+        "Do you have vomiting without nausea?",
+        "Have you noticed any changes in consciousness?"
+      ],
+      "positive_action": "ESI_LEVEL_2",
+      "keywords": ["morning", "worse", "lying", "vomiting", "consciousness"]
+    }
+  ],
+
+  "severity_assessment": {
+    "questions": [
+      "On a scale of 1-10, how severe is your headache?",
+      "How long have you had this headache?",
+      "Have you had headaches like this before?"
+    ],
+    "thresholds": {
+      "severe": {"pain_scale": 8, "action": "ESI_LEVEL_2"},
+      "moderate": {"pain_scale": 5, "action": "ESI_LEVEL_3"},
+      "mild": {"pain_scale": 1, "action": "ESI_LEVEL_4"}
+    }
+  },
+
+  "risk_factors": [
+    "Age > 50 with new onset headache",
+    "Recent head trauma",
+    "Immunocompromised",
+    "Cancer history",
+    "Pregnancy",
+    "On blood thinners"
+  ],
+
+  "differential_by_pattern": {
+    "sudden_onset": ["SAH", "Stroke", "Hypertensive emergency"],
+    "gradual_onset": ["Tension headache", "Migraine", "Sinusitis"],
+    "chronic_progressive": ["Brain tumor", "Chronic subdural", "Medication overuse"],
+    "with_fever": ["Meningitis", "Encephalitis", "Sinusitis"]
+  },
+
+  "default_department": "Neurology",
+  "backup_departments": ["Emergency", "Internal Medicine"]
+}

@@ -1,0 +1,277 @@
+{
+  "condition": "Traumatic Brain Injury",
+  "condition_sctid": "127295002",
+  "guideline_source": "Canadian CT Head Rule",
+  "guideline_url": "https://www.mdcalc.com/calc/608/canadian-ct-head-injury-trauma-rule",
+  "version": "1.0",
+  "last_updated": "2024-01",
+
+  "description": "The Canadian CT Head Rule is a clinical decision tool for determining the need for CT imaging in patients with minor head injury (GCS 13-15). It identifies patients at high and medium risk for clinically important brain injury.",
+
+  "applicability": {
+    "inclusion": [
+      "Adults (age >= 16 years)",
+      "Minor head injury (GCS 13-15)",
+      "Loss of consciousness, amnesia, or witnessed disorientation"
+    ],
+    "exclusion": [
+      "GCS < 13",
+      "Age < 16 years",
+      "Patients on anticoagulants",
+      "Obvious open skull fracture",
+      "No clear history of trauma as the primary event"
+    ]
+  },
+
+  "decision_rules": [
+    {
+      "rule_id": "CCHR_HIGH_1",
+      "rule_name": "GCS < 15 at 2 hours",
+      "risk_level": "HIGH",
+      "description": "GCS score below 15 at 2 hours after injury",
+      "criteria": [
+        {
+          "criterion_id": "CCHR_HIGH_1_C1",
+          "type": "vital_sign",
+          "name": "GCS",
+          "operator": "<",
+          "threshold": 15,
+          "timing": "2 hours post-injury",
+          "snomed_code": "248241002"
+        }
+      ],
+      "action": {
+        "type": "imaging",
+        "modality": "CT Head",
+        "urgency": "IMMEDIATE",
+        "rationale": "High risk for neurosurgical intervention"
+      },
+      "evidence_text": "Patients with GCS < 15 at 2 hours after injury have approximately 4% risk of clinically important brain injury requiring neurosurgical intervention."
+    },
+    {
+      "rule_id": "CCHR_HIGH_2",
+      "rule_name": "Suspected skull fracture",
+      "risk_level": "HIGH",
+      "description": "Clinical signs of open or depressed skull fracture",
+      "criteria": [
+        {
+          "criterion_id": "CCHR_HIGH_2_C1",
+          "type": "symptom",
+          "name": "Suspected skull fracture",
+          "snomed_code": "371100002",
+          "keywords": ["skull fracture", "palpable depression", "scalp laceration to bone"]
+        }
+      ],
+      "action": {
+        "type": "imaging",
+        "modality": "CT Head",
+        "urgency": "IMMEDIATE",
+        "rationale": "High risk for intracranial injury"
+      },
+      "evidence_text": "Open or depressed skull fractures indicate direct trauma to the cranium with high risk of underlying brain injury."
+    },
+    {
+      "rule_id": "CCHR_HIGH_3",
+      "rule_name": "Signs of basal skull fracture",
+      "risk_level": "HIGH",
+      "description": "Clinical signs suggestive of basilar skull fracture",
+      "criteria": [
+        {
+          "criterion_id": "CCHR_HIGH_3_C1",
+          "type": "symptom",
+          "name": "Basal skull fracture signs",
+          "snomed_code": "110266004",
+          "keywords": ["raccoon eyes", "Battle sign", "hemotympanum", "CSF otorrhea", "CSF rhinorrhea"]
+        }
+      ],
+      "action": {
+        "type": "imaging",
+        "modality": "CT Head",
+        "urgency": "IMMEDIATE",
+        "rationale": "High risk for intracranial injury and CSF leak"
+      },
+      "evidence_text": "Basilar skull fractures are associated with significant force of injury and high risk of intracranial hemorrhage."
+    },
+    {
+      "rule_id": "CCHR_HIGH_4",
+      "rule_name": "Vomiting >= 2 episodes",
+      "risk_level": "HIGH",
+      "description": "Two or more episodes of vomiting after head injury",
+      "criteria": [
+        {
+          "criterion_id": "CCHR_HIGH_4_C1",
+          "type": "symptom",
+          "name": "Vomiting",
+          "operator": ">=",
+          "threshold": 2,
+          "unit": "episodes",
+          "snomed_code": "422400008",
+          "keywords": ["vomiting", "vomited", "threw up"]
+        }
+      ],
+      "action": {
+        "type": "imaging",
+        "modality": "CT Head",
+        "urgency": "IMMEDIATE",
+        "rationale": "High risk for clinically important brain injury"
+      },
+      "evidence_text": "Vomiting >=2 episodes post-injury is a high-risk criterion associated with increased intracranial pressure."
+    },
+    {
+      "rule_id": "CCHR_HIGH_5",
+      "rule_name": "Age >= 65 years",
+      "risk_level": "HIGH",
+      "description": "Patient age 65 years or older with head trauma",
+      "criteria": [
+        {
+          "criterion_id": "CCHR_HIGH_5_C1",
+          "type": "demographic",
+          "name": "Age",
+          "operator": ">=",
+          "threshold": 65,
+          "unit": "years"
+        }
+      ],
+      "action": {
+        "type": "imaging",
+        "modality": "CT Head",
+        "urgency": "IMMEDIATE",
+        "rationale": "Increased risk of intracranial hemorrhage in elderly"
+      },
+      "evidence_text": "Elderly patients have increased risk of subdural hematoma due to brain atrophy and bridging vein fragility."
+    },
+    {
+      "rule_id": "CCHR_MED_1",
+      "rule_name": "Retrograde amnesia >= 30 minutes",
+      "risk_level": "MEDIUM",
+      "description": "Amnesia for events 30 minutes or more before impact",
+      "criteria": [
+        {
+          "criterion_id": "CCHR_MED_1_C1",
+          "type": "symptom",
+          "name": "Retrograde amnesia",
+          "operator": ">=",
+          "threshold": 30,
+          "unit": "minutes",
+          "snomed_code": "386807006",
+          "keywords": ["memory loss", "can't remember before", "amnesia"]
+        }
+      ],
+      "action": {
+        "type": "imaging",
+        "modality": "CT Head",
+        "urgency": "URGENT",
+        "rationale": "Medium risk - CT recommended"
+      },
+      "evidence_text": "Retrograde amnesia >= 30 minutes suggests more significant brain injury."
+    },
+    {
+      "rule_id": "CCHR_MED_2",
+      "rule_name": "Dangerous mechanism",
+      "risk_level": "MEDIUM",
+      "description": "High-energy mechanism of injury",
+      "criteria": [
+        {
+          "criterion_id": "CCHR_MED_2_C1",
+          "type": "mechanism",
+          "name": "Dangerous mechanism",
+          "snomed_code": "418399005",
+          "keywords": ["pedestrian struck", "ejected from vehicle", "fall > 3 feet", "fall > 5 stairs", "bicycle without helmet"]
+        }
+      ],
+      "action": {
+        "type": "imaging",
+        "modality": "CT Head",
+        "urgency": "URGENT",
+        "rationale": "Medium risk due to high-energy transfer"
+      },
+      "evidence_text": "Dangerous mechanisms include: pedestrian struck by motor vehicle, occupant ejected from vehicle, fall from height > 3 feet or 5 stairs."
+    }
+  ],
+
+  "clarifying_questions": [
+    {
+      "question_id": "TBI_Q1",
+      "question": "How many times has the patient vomited since the injury?",
+      "question_zh": "受伤后患者呕吐了几次？",
+      "target_criterion": "CCHR_HIGH_4_C1",
+      "response_type": "number",
+      "priority": 1
+    },
+    {
+      "question_id": "TBI_Q2",
+      "question": "Did the patient lose consciousness? If yes, for how long?",
+      "question_zh": "患者有没有失去意识？如果有，持续多长时间？",
+      "target_criterion": "CCHR_HIGH_1_C1",
+      "response_type": "duration",
+      "priority": 1
+    },
+    {
+      "question_id": "TBI_Q3",
+      "question": "Can the patient remember events before the injury? If not, how far back is the memory loss?",
+      "question_zh": "患者能记得受伤前的事情吗？如果不能，记忆丢失了多长时间？",
+      "target_criterion": "CCHR_MED_1_C1",
+      "response_type": "duration",
+      "priority": 2
+    },
+    {
+      "question_id": "TBI_Q4",
+      "question": "How did the injury occur? Was it a fall, motor vehicle accident, or other mechanism?",
+      "question_zh": "受伤是怎么发生的？是摔倒、车祸还是其他原因？",
+      "target_criterion": "CCHR_MED_2_C1",
+      "response_type": "text",
+      "priority": 2
+    },
+    {
+      "question_id": "TBI_Q5",
+      "question": "Is there any visible wound on the head? Is there any depression or step-off felt on the skull?",
+      "question_zh": "头部有没有可见的伤口？触摸头骨有没有感觉到凹陷？",
+      "target_criterion": "CCHR_HIGH_2_C1",
+      "response_type": "boolean",
+      "priority": 1
+    }
+  ],
+
+  "text_chunks": [
+    {
+      "chunk_id": "TBI_CHUNK_1",
+      "chunk_type": "decision_rule",
+      "title": "Canadian CT Head Rule - High Risk Criteria",
+      "content": "The Canadian CT Head Rule identifies patients at HIGH RISK who require immediate CT scan. High-risk criteria include: (1) GCS < 15 at 2 hours after injury, (2) Suspected open or depressed skull fracture, (3) Any sign of basal skull fracture (hemotympanum, raccoon eyes, CSF otorrhea/rhinorrhea, Battle's sign), (4) Vomiting >= 2 episodes, (5) Age >= 65 years. ANY of these criteria mandates CT imaging.",
+      "source": "Canadian CT Head Rule, CMAJ 2001",
+      "tags": ["TBI", "CT", "high-risk", "decision-rule"]
+    },
+    {
+      "chunk_id": "TBI_CHUNK_2",
+      "chunk_type": "decision_rule",
+      "title": "Canadian CT Head Rule - Medium Risk Criteria",
+      "content": "The Canadian CT Head Rule medium-risk criteria include: (1) Retrograde amnesia >= 30 minutes before impact, (2) Dangerous mechanism of injury (pedestrian struck, ejected from vehicle, fall from height > 3 feet or > 5 stairs). Presence of medium-risk criteria warrants consideration of CT imaging.",
+      "source": "Canadian CT Head Rule, CMAJ 2001",
+      "tags": ["TBI", "CT", "medium-risk", "decision-rule"]
+    },
+    {
+      "chunk_id": "TBI_CHUNK_3",
+      "chunk_type": "clinical_background",
+      "title": "Traumatic Brain Injury - Overview",
+      "content": "Traumatic brain injury (TBI) occurs when external force injures the brain. Minor TBI (GCS 13-15) accounts for 70-90% of all TBI cases. While most patients recover fully, 5-15% may have clinically important brain injury requiring intervention. Early identification through structured assessment tools like the Canadian CT Head Rule reduces unnecessary CT scans while ensuring high-risk patients receive timely imaging.",
+      "source": "NICE Guidelines NG232",
+      "tags": ["TBI", "overview", "epidemiology"]
+    },
+    {
+      "chunk_id": "TBI_CHUNK_4",
+      "chunk_type": "red_flag",
+      "title": "TBI Red Flags - Immediate Action Required",
+      "content": "Red flags in head injury requiring immediate action: (1) Unconscious or decreased level of consciousness, (2) Focal neurological deficit (limb weakness, pupil asymmetry), (3) Seizure, (4) Clear fluid from ear or nose (CSF leak), (5) Blood from ear, (6) Bruising around eyes or behind ears, (7) Penetrating injury, (8) Persistent severe headache, (9) Repeated vomiting. Any red flag requires immediate medical evaluation and likely CT imaging.",
+      "source": "NICE Guidelines NG232",
+      "tags": ["TBI", "red-flag", "emergency"]
+    },
+    {
+      "chunk_id": "TBI_CHUNK_5",
+      "chunk_type": "management",
+      "title": "TBI Initial Management",
+      "content": "Initial management of TBI includes: (1) ABCDE assessment - ensure airway patency, adequate breathing, circulation, (2) Cervical spine immobilization until cleared, (3) GCS documentation - score and individual components, (4) Pupil examination for size and reactivity, (5) Examination for skull fracture signs, (6) Neurological examination for focal deficits, (7) CT Head if any high-risk criteria met, (8) Observation and serial neurological assessments. For GCS <= 8, consider intubation for airway protection.",
+      "source": "Brain Trauma Foundation Guidelines",
+      "tags": ["TBI", "management", "initial-assessment"]
+    }
+  ]
+}

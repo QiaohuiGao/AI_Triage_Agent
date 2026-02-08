@@ -1,0 +1,99 @@
+{
+  "protocol_id": "abdominal_pain_001",
+  "symptom": "Abdominal Pain",
+  "snomed_codes": ["21522001", "27355003", "43478001"],
+  "description": "Schmitt-Thompson style triage protocol for abdominal pain",
+
+  "red_flags": [
+    {
+      "id": "rf_aaa",
+      "condition": "Possible ruptured AAA",
+      "questions": [
+        "Do you have severe back or flank pain along with abdominal pain?",
+        "Are you feeling faint or lightheaded?",
+        "Do you have a pulsating sensation in your abdomen?"
+      ],
+      "positive_action": "ESI_LEVEL_1",
+      "keywords": ["back pain", "flank", "faint", "lightheaded", "pulsating"]
+    },
+    {
+      "id": "rf_peritonitis",
+      "condition": "Possible peritonitis",
+      "questions": [
+        "Is your abdomen rigid or board-like?",
+        "Does it hurt when you release pressure (rebound tenderness)?",
+        "Are you unable to pass gas or have a bowel movement?"
+      ],
+      "positive_action": "ESI_LEVEL_2",
+      "keywords": ["rigid", "board-like", "rebound", "no gas", "no bowel"]
+    },
+    {
+      "id": "rf_appendicitis",
+      "condition": "Possible appendicitis",
+      "questions": [
+        "Did the pain start around your belly button and move to the right lower side?",
+        "Do you have fever, nausea, or vomiting?",
+        "Does walking or coughing make the pain worse?"
+      ],
+      "positive_action": "ESI_LEVEL_2",
+      "keywords": ["right lower", "migrating", "fever", "nausea", "walking worse"]
+    },
+    {
+      "id": "rf_ectopic",
+      "condition": "Possible ectopic pregnancy (females)",
+      "questions": [
+        "Is there any chance you could be pregnant?",
+        "Do you have vaginal bleeding?",
+        "Is the pain severe and on one side?"
+      ],
+      "positive_action": "ESI_LEVEL_2",
+      "keywords": ["pregnant", "bleeding", "one side", "vaginal"]
+    },
+    {
+      "id": "rf_gi_bleed",
+      "condition": "Possible GI bleeding",
+      "questions": [
+        "Have you noticed blood in your vomit or stool?",
+        "Is your stool black or tarry?",
+        "Are you feeling dizzy or weak?"
+      ],
+      "positive_action": "ESI_LEVEL_2",
+      "keywords": ["blood", "vomit", "black stool", "tarry", "dizzy", "weak"]
+    }
+  ],
+
+  "severity_assessment": {
+    "questions": [
+      "On a scale of 1-10, how severe is your pain?",
+      "How long have you had this pain?",
+      "Is the pain constant or does it come and go (colicky)?"
+    ],
+    "thresholds": {
+      "severe": {"pain_scale": 7, "action": "ESI_LEVEL_2"},
+      "moderate": {"pain_scale": 4, "action": "ESI_LEVEL_3"},
+      "mild": {"pain_scale": 1, "action": "ESI_LEVEL_4"}
+    }
+  },
+
+  "risk_factors": [
+    "Age > 50",
+    "Recent abdominal surgery",
+    "History of AAA",
+    "On blood thinners or NSAIDs",
+    "Pregnancy or possibility of pregnancy",
+    "History of GI bleeding"
+  ],
+
+  "differential_by_location": {
+    "right_upper_quadrant": ["Cholecystitis", "Hepatitis", "Pneumonia"],
+    "left_upper_quadrant": ["Splenic pathology", "Gastritis", "Pancreatitis"],
+    "right_lower_quadrant": ["Appendicitis", "Ovarian pathology", "Ectopic pregnancy"],
+    "left_lower_quadrant": ["Diverticulitis", "Ovarian pathology", "Ectopic pregnancy"],
+    "epigastric": ["Gastritis", "PUD", "Pancreatitis", "MI"],
+    "periumbilical": ["Early appendicitis", "Small bowel obstruction", "AAA"],
+    "diffuse": ["Peritonitis", "Bowel obstruction", "Mesenteric ischemia"]
+  },
+
+  "default_department": "Emergency",
+  "backup_departments": ["General Surgery", "Gastroenterology"]
+}

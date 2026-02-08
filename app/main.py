@@ -8,22 +8,32 @@ FastAPI 应用主入口 (main.py)
 - 请求日志持久化到 PostgreSQL
 - 错误处理和响应序列化
 
+v2.0 更新：
+- 支持 ESI 五级分诊
+- 支持生命体征输入
+- 支持动态追问
+- 添加 CORS 支持前端调用
+
 主要流程：
-1. 接收患者症状描述
-2. 通过 LangGraph 执行分诊推理流程
-3. 记录请求和结果到数据库
-4. 返回 JSON 格式的分诊建议
+1. 接收患者症状描述（可选包含生命体征）
+2. 通过 LangGraph v2.0 执行分诊推理流程
+3. 返回 ESI 等级、科室建议、红旗警告
+4. 记录请求和结果到数据库
 """
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from prometheus_client import make_asgi_app
 from app.graph.triage_graph import build_triage_graph
+from app.schemas import GraphState
 from app.monitoring.prometheus_metrics import triage_latency, triage_success, triage_errors
 from app.storage.postgres_logger import init_table, log_request
 from loguru import logger
 from pydantic import BaseModel
-from dotenv import load_dotenv;
+from typing import Optional, Dict, Any
+from dotenv import load_dotenv
 import os
 
 # 强制加载项目根目录的 .env
@@ -39,10 +49,32 @@ else:
     print("❌ OPENAI_API_KEY not found. Please check .env or path.") 
 
 # ========== FastAPI 应用初始化 ==========
-app = FastAPI(title="AI Triage Agent (LangGraph)")
+app = FastAPI(
+    title="AI Triage Agent v2.0",
+    description="ESI-based medical triage with Neo4j graph reasoning",
+    version="2.0.0"
+)
+
+# ========== CORS 配置 ==========
+# 允许前端跨域请求
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 生产环境应限制为特定域名
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # 挂载 Prometheus 指标端点，用于监控服务健康状态和性能指标
 app.mount("/metrics", make_asgi_app())
+
+# 挂载静态文件目录（前端）
+try:
+    frontend_dir = os.path.join(BASE_DIR, "frontend")
+    if os.path.exists(frontend_dir):
+        app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+except Exception as e:
+    logger.warning(f"Could not mount frontend static files: {e}")
 
 # ========== LangGraph 图构建和编译 ==========
 # 构建分诊推理图并编译为可执行状态
@@ -53,65 +85,163 @@ graph = build_triage_graph().compile()
 # 初始化 PostgreSQL 日志表（如果不存在则创建）
 init_table()
 
+# ========== 请求模型 (v2.0) ==========
+class TriageRequest(BaseModel):
+    """分诊请求模型"""
+    text: str                                    # 患者症状描述
+    lang: str = "en"                             # 语言代码
+    metadata: Optional[Dict[str, Any]] = None    # 可选元数据
+    vitals: Optional[Dict[str, Any]] = None      # v2.0: 生命体征
+    clarification_response: Optional[str] = None # v2.0: 追问回答
+
+
 # ========== API 端点定义 ==========
+@app.get("/")
+def root():
+    """根路径 - 返回 API 信息"""
+    return {
+        "service": "AI Triage Agent",
+        "version": "2.0.0",
+        "status": "online",
+        "endpoints": {
+            "triage": "POST /triage",
+            "health": "GET /health",
+            "frontend": "GET /static/index.html"
+        }
+    }
+
+
+@app.get("/health")
+def health_check():
+    """健康检查端点"""
+    return {"status": "healthy", "version": "2.0.0"}
+
+
 @app.post("/triage")
-def triage_endpoint(patient: dict):
+def triage_endpoint(request: TriageRequest):
     """
-    分诊请求处理端点
-    
-    接收患者症状描述，执行 AI 分诊推理，返回科室建议和紧急程度。
-    
+    分诊请求处理端点 (v2.0)
+
+    接收患者症状描述（可选包含生命体征），执行 AI 分诊推理，
+    返回 ESI 等级、科室建议和紧急程度。
+
     请求格式：
         {
             "text": "患者症状描述",
             "lang": "语言代码（默认en）",
-            "metadata": {}  # 可选元数据
+            "metadata": {},  # 可选元数据
+            "vitals": {      # 可选生命体征
+                "hr": 80,
+                "bp": "120/80",
+                "spo2": 98,
+                "temp": 36.5,
+                "rr": 16
+            },
+            "clarification_response": "Yes, the pain radiates..."  # 追问回答
         }
-    
+
     响应格式：
         {
-            "suggested_department": "建议科室",
-            "urgency": "紧急程度（ER/Urgent/Routine）",
-            "confidence": 0.xx,  # 置信度
-            "agreement": 0.xx,   # 一致性
-            "final_conditions": [],  # 可能的疾病
-            "rationale": "推理依据",
-            "evidence": []  # 检索到的医疗文档证据
+            "esi_level": 2,
+            "esi_assessment": {...},
+            "final_output": {
+                "suggested_department": "Emergency",
+                "urgency": "ER",
+                "esi_level": 2,
+                "confidence": 0.95,
+                "final_conditions": [...],
+                "rationale": "...",
+                "red_flags": [...],
+                "evidence": [...]
+            },
+            "entities": [...],
+            "red_flags": [...],
+            "clarification_questions": [...],  # 如果需要追问
+            "needs_clarification": false
         }
     """
     try:
-        # 执行 LangGraph 推理流程
-        # 输入：患者输入数据
-        # 输出：包含 final_output 的完整状态
-        result = graph.invoke({"patient_input": patient})
-        
-        # 提取最终输出，如果没有 final_output 则使用整个 result
-        output = result.get("final_output", result)
+        # 构建患者输入
+        patient_input = {
+            "text": request.text,
+            "lang": request.lang,
+            "metadata": request.metadata
+        }
+
+        # 构建初始状态
+        initial_state = GraphState(
+            patient_input=patient_input,
+            vitals=request.vitals,
+            clarification_response=request.clarification_response
+        )
+
+        # 执行 LangGraph v2.0 推理流程
+        result = graph.invoke(initial_state)
 
         # ========== 序列化转换 ==========
-        # 将 Pydantic 模型递归转换为 JSON 可序列化的字典
-        # 这是因为 FastAPI 返回时需要纯字典格式，不能包含 Pydantic 对象
         def _to_json(o):
             if isinstance(o, BaseModel):
-                return o.model_dump()  # Pydantic 模型转为字典
+                return o.model_dump()
             elif isinstance(o, list):
-                return [_to_json(i) for i in o]  # 递归处理列表
+                return [_to_json(i) for i in o]
             elif isinstance(o, dict):
-                return {k: _to_json(v) for k, v in o.items()}  # 递归处理字典
+                return {k: _to_json(v) for k, v in o.items()}
             else:
-                return o  # 基本类型直接返回
+                return o
 
-        output = _to_json(output)
+        # 构建响应
+        response = {
+            "esi_level": result.get("esi_level"),
+            "esi_assessment": _to_json(result.get("esi_assessment")),
+            "final_output": _to_json(result.get("final_output")),
+            "entities": _to_json(result.get("entities")),
+            "red_flags": result.get("red_flags"),
+            "graph_context": _to_json(result.get("graph_context")) if result.get("graph_context") else None,
+            "needs_clarification": result.get("needs_clarification", False),
+            "clarification_questions": result.get("clarification_questions"),
+        }
 
         # ========== 日志记录 ==========
-        # 将请求和结果持久化到 PostgreSQL，用于后续分析和审计
+        log_request(patient_input, response.get("final_output", response))
+
+        return JSONResponse(response)
+
+    except Exception as e:
+        logger.error(f"Triage endpoint error: {e}")
+        import traceback
+        traceback.print_exc()
+        return JSONResponse(
+            {"error": "internal_error", "detail": str(e)},
+            status_code=500
+        )
+
+
+# ========== 兼容旧版 API ==========
+@app.post("/triage/v1")
+def triage_v1_endpoint(patient: dict):
+    """
+    v1.0 兼容端点 - 使用旧版简单格式
+
+    保留向后兼容性，使用 v1.0 的响应格式
+    """
+    try:
+        result = graph.invoke({"patient_input": patient})
+        output = result.get("final_output", result)
+
+        def _to_json(o):
+            if isinstance(o, BaseModel):
+                return o.model_dump()
+            elif isinstance(o, list):
+                return [_to_json(i) for i in o]
+            elif isinstance(o, dict):
+                return {k: _to_json(v) for k, v in o.items()}
+            else:
+                return o
+
+        output = _to_json(output)
         log_request(patient, output)
-        
-        # 返回 JSON 响应
         return JSONResponse(output)
 
     except Exception as e:
-        # ========== 错误处理 ==========
-        # 记录错误日志并返回 500 错误响应
-        logger.error(f"Triage endpoint error: {e}")
+        logger.error(f"Triage v1 endpoint error: {e}")
         return JSONResponse({"error": "internal_error"}, status_code=500)

@@ -54,9 +54,6 @@ import numpy as np
 from openai import OpenAI
 from dotenv import load_dotenv
 
-# 自动加载 .env 文件（从根目录或 data_pipeline/.env）
-# load_dotenv() 会查找项目根目录下的 .env 文件
-load_dotenv()
 
 # 初始化 OpenAI 客户端
 # 从环境变量读取 API 密钥

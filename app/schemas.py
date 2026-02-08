@@ -97,4 +97,23 @@ class GraphState(BaseModel):
     reasoning_runs: Optional[List[Dict[str, Any]]] = None  # 多次推理运行的结果列表
     final_output: Optional[Dict[str, Any]] = None     # 最终分诊输出（FallbackRoute 节点填充）
     vote_result: Optional[Dict[str, Any]] = None     # 投票结果（VoteConfidence 节点填充，可能与 voting_result 重复）
+
+    # ========== v2.0 新增字段 ==========
+    # ESI 分级相关
+    esi_assessment: Optional[Dict[str, Any]] = None  # ESI 评估结果 (esi_engine 填充)
+    esi_level: Optional[int] = None                  # ESI 等级 (1-5)
+    red_flags: Optional[List[str]] = None            # 检测到的危险信号
+
+    # 图推理相关
+    graph_context: Optional[Dict[str, Any]] = None   # Neo4j 图上下文 (graph_service 填充)
+    risk_associations: Optional[List[Dict]] = None   # 风险关联
+
+    # 动态追问相关
+    needs_clarification: bool = False                # 是否需要追问
+    clarification_questions: Optional[List[str]] = None  # 待提问的问题
+    clarification_response: Optional[str] = None     # 患者的回答
+    clarification_count: int = 0                     # 已追问轮数
+
+    # 生命体征 (可选输入)
+    vitals: Optional[Dict[str, Any]] = None          # 生命体征数据
     

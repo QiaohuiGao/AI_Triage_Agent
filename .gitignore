@@ -4,9 +4,15 @@ ai-triage-agent-pro/
 .venv/
 venv/
 env/
+source/
 __pycache__/
 *.pyc
 
 # Build / system
 .DS_Store
-source/.env
+
+# Environment files with secrets
+.env
+
+# Neo4j output
+output/

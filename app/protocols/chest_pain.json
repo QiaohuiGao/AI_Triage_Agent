@@ -1,0 +1,73 @@
+{
+  "protocol_id": "chest_pain_001",
+  "symptom": "Chest Pain",
+  "snomed_codes": ["29857009", "426396005", "102588000"],
+  "description": "Schmitt-Thompson style triage protocol for chest pain",
+
+  "red_flags": [
+    {
+      "id": "rf_cardiac",
+      "condition": "Possible cardiac event",
+      "questions": [
+        "Is the pain crushing, squeezing, or pressure-like?",
+        "Does the pain radiate to your left arm, jaw, neck, or back?",
+        "Are you experiencing sweating, nausea, or shortness of breath?"
+      ],
+      "positive_action": "ESI_LEVEL_2",
+      "keywords": ["crushing", "squeezing", "pressure", "radiating", "sweating", "nausea"]
+    },
+    {
+      "id": "rf_aortic",
+      "condition": "Possible aortic dissection",
+      "questions": [
+        "Did the pain start suddenly and severely (tearing sensation)?",
+        "Does the pain radiate to your back between your shoulder blades?"
+      ],
+      "positive_action": "ESI_LEVEL_1",
+      "keywords": ["tearing", "ripping", "sudden", "severe", "back"]
+    },
+    {
+      "id": "rf_pe",
+      "condition": "Possible pulmonary embolism",
+      "questions": [
+        "Do you have sudden shortness of breath?",
+        "Have you recently had surgery, been on a long flight, or been immobile?",
+        "Do you have pain when breathing deeply?"
+      ],
+      "positive_action": "ESI_LEVEL_2",
+      "keywords": ["sudden", "shortness", "breath", "surgery", "immobile", "pleuritic"]
+    }
+  ],
+
+  "severity_assessment": {
+    "questions": [
+      "On a scale of 1-10, how severe is your pain?",
+      "How long have you had this pain?",
+      "Is the pain constant or does it come and go?"
+    ],
+    "thresholds": {
+      "severe": {"pain_scale": 7, "action": "ESI_LEVEL_2"},
+      "moderate": {"pain_scale": 4, "action": "ESI_LEVEL_3"},
+      "mild": {"pain_scale": 1, "action": "ESI_LEVEL_4"}
+    }
+  },
+
+  "risk_factors": [
+    "History of heart disease",
+    "Diabetes",
+    "High blood pressure",
+    "Smoking",
+    "Family history of heart disease",
+    "Age > 45 (men) or > 55 (women)"
+  ],
+
+  "differential_by_location": {
+    "substernal": ["Cardiac", "Esophageal", "Aortic"],
+    "left_sided": ["Cardiac", "Musculoskeletal", "Pleuritic"],
+    "right_sided": ["Pulmonary", "Hepatobiliary", "Musculoskeletal"],
+    "epigastric": ["Cardiac", "GI (GERD, PUD)", "Pancreatitis"]
+  },
+
+  "default_department": "Emergency",
+  "backup_departments": ["Cardiology", "Internal Medicine"]
+}
