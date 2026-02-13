@@ -16,3 +16,7 @@ __pycache__/
 
 # Neo4j output
 output/
+
+# Private docs (never push)
+docs/DEVELOPMENT_REPORT.md
+docs/RESUME_QUICK_REFERENCE.md
